@@ -26,12 +26,23 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: cosign-installer
+        uses: sigstore/cosign-installer@v2.0.0
+      - name: Output cosign private key
+        run: 'echo "$KEY" > cosign.key'
+        shell: bash
+        env:
+          KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
       - uses: docker/build-push-action@v3
         if: github.event.pull_request.merged == true
         with:
           push: true
           tags: ${{ env.REGISTRY_BASE }}/${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           context: ${{ env.CONTEXT }}
+      - name: Sign Docker image
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+        run: cosign sign --key cosign.key ${{ env.REGISTRY_BASE }}/${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
       - uses: actions/checkout@v2
       - name: Update image tag
         if: github.event.pull_request.merged == true
