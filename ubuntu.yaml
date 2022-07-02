@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: ubuntu
-        image: docker.io/youvegotmoxie/ubuntu-jump:dev
+        image: ubuntu-jump:dev
         lifecycle:
           postStart:
             exec:
