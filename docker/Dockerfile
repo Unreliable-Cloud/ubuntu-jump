@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=nointeractive
 
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y openssh-server curl sudo vim git rsync
+    apt install -y openssh-server curl sudo vim git rsync zsh
 
 RUN mkdir /root/.ssh && \
     chmod 0700 /root/.ssh && \
