@@ -107,6 +107,7 @@ data:
       useradd -c "Ubuntu user" -d /home/ubuntu -m -s /usr/bin/zsh -G sudo ubuntu
       mkdir -p ~ubuntu/.ssh
       touch ~ubuntu/.zshrc
+      echo -e "export GH_TOKEN=${GH_TOKEN}" >> ~ubuntu/.zshrc
       chmod 0700 ~ubuntu/.ssh
       cp /root/.ssh/authorized_keys ~ubuntu/.ssh/authorized_keys
       chmod 0600 ~ubuntu/.ssh/authorized_keys
