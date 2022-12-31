@@ -1,4 +1,5 @@
 ARG IMAGE_TAG=jammy
+FROM bitnami/kubectl:latest as kube
 FROM docker.io/ubuntu:$IMAGE_TAG
 LABEL maintainer="MikeB <mike@donthurt.us>"
 
@@ -31,6 +32,8 @@ RUN cd /root && wget https://github.com/containerd/nerdctl/releases/download/v${
 
 RUN mkdir /run/sshd && \
     ssh-keygen -A
+
+COPY --from=kube --chown=root:root /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/kubectl
 
 EXPOSE 22
 VOLUME [ "/home" ]
