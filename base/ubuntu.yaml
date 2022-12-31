@@ -98,8 +98,9 @@ data:
       exit 0
     else
       echo "startup script: configuring user"
-      useradd -c "Ubuntu user" -d /home/ubuntu -m -s /bin/bash -G sudo ubuntu
+      useradd -c "Ubuntu user" -d /home/ubuntu -m -s /usr/bin/zsh -G sudo ubuntu
       mkdir -p ~ubuntu/.ssh
+      touch ~ubuntu/.zshrc
       chmod 0700 ~ubuntu/.ssh
       cp /root/.ssh/authorized_keys ~ubuntu/.ssh/authorized_keys
       chmod 0600 ~ubuntu/.ssh/authorized_keys
@@ -174,6 +175,7 @@ spec:
               protocol: TCP
     - toFQDNs:
         - matchPattern: "github.com"
+        - matchPattern: "api.github.com"
       toPorts:
         - ports:
             - port: "443"
