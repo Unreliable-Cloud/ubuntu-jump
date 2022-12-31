@@ -164,7 +164,7 @@ spec:
       role: jump
   egress:
     - toFQDNs:
-        - matchPattern: "(.*)github.com/.*"
+        - matchPattern: ".*github.com/.*"
       toPorts:
         - ports:
             - port: "443"
