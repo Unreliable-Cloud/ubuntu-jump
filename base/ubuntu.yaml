@@ -155,13 +155,22 @@ metadata:
   labels:
     app: ubuntu
     role: jump
-  name: allow-egress-apt-dns
+  name: allow-egress-apt-dns-ssh
 spec:
   endpointSelector:
     matchLabels:
       app: ubuntu
       role: jump
   egress:
+    - toFQDNs:
+        - matchPattern: "(.*)github.com/*?"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: ANY
+        - ports:
+            - port: "22"
+              protocol: ANY
     - toFQDNs:
         - matchPattern: "*.ubuntu.com"
       toPorts:
