@@ -37,10 +37,11 @@ spec:
               command: ["/bin/bash", "/usr/local/share/startup_scripts/postStart.sh"]
         env:
         - name: GH_TOKEN
-          secretKeyRef:
-            name: github-token
-            key: GH_TOKEN
-            optional: true
+          valueFrom:
+            secretKeyRef:
+              name: github-token
+              key: GH_TOKEN
+              optional: true
         ports:
         - containerPort: 22
           name: ssh
