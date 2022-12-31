@@ -12,8 +12,7 @@ RUN mkdir /root/.ssh && \
   echo "ubuntu ALL = (ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu
 
 RUN mkdir /run/sshd && \
-  ssh-keygen -A && \
-  apt autoremove -y curl
+  ssh-keygen -A
 
 EXPOSE 22
 VOLUME [ "/home" ]
