@@ -26,7 +26,6 @@ spec:
       labels:
         app: ubuntu
         role: jump
-        sidecar.istio.io/inject: "true"
         version: jammy
     spec:
       containers:
@@ -47,7 +46,7 @@ spec:
         imagePullPolicy: Always
         resources:
           limits:
-            cpu: 500m
+            cpu: "1"
             memory: 1Gi
           requests:
             cpu: 50m
@@ -77,7 +76,7 @@ spec:
       storageClassName: hcloud-volumes
       resources:
         requests:
-          storage: 10Gi
+          storage: 50Gi
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -124,7 +123,7 @@ spec:
     protocol: TCP
     name: ssh
   type: LoadBalancer
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Cluster
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -140,9 +139,7 @@ spec:
       role: jump
   ingress:
     - fromCIDRSet:
-        - cidr: 172.220.74.59/32
-        - cidr: 5.161.38.189/32
-        - cidr: 216.6.210.1/32
+        - cidr: 0.0.0.0/0
       toPorts:
         - ports:
             - port: "22"
@@ -217,32 +214,3 @@ specs:
     - fromEndpoints:
       - matchLabels:
           k8s:io.kubernetes.pod.namespace: istio-system
----
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name: ubuntu-ssh
-spec:
-  hosts:
-  - ubuntu-ssh.ubuntu-jump.svc.cluster.local
-  tcp:
-  - match:
-    - port: 22
-    route:
-    - destination:
-        host: ubuntu-ssh.ubuntu-jump.svc.cluster.local
-        subset: main
-      weight: 100
----
-apiVersion: networking.istio.io/v1beta1
-kind: DestinationRule
-metadata:
-  name: ubuntu-ssh
-spec:
-  host: ubuntu-ssh.ubuntu-jump.svc.cluster.local
-  subsets:
-  - name: main
-    labels:
-      app: ubuntu
-      role: jump
-      version: jammy
