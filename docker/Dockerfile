@@ -20,7 +20,13 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | s
     chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
     apt update && \
-    apt install gh -y
+    apt install -y gh
+
+RUN curl https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz -o nerdctl.tar.gz && \
+    tar xzvf nerdctl.tar.gz && \
+    chmod +x nerdctl && \
+    mv nerdctl /usr/local/bin/docker && \
+    rm nerdctl* containerd-rootless*.sh
 
 RUN mkdir /run/sshd && \
     ssh-keygen -A
