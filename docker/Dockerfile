@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=nointeractive
 
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y openssh-server curl sudo vim git rsync zsh
+    apt install -y openssh-server curl sudo vim git rsync zsh wget
 
 RUN mkdir /root/.ssh && \
     chmod 0700 /root/.ssh && \
@@ -22,7 +22,7 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | s
     apt update && \
     apt install -y gh
 
-RUN cd /root && curl https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz && \
+RUN cd /root && wget https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz && \
     tar xzvf nerdctl-1.1.0-linux-amd64.tar.gz && \
     chmod +x nerdctl && \
     mv nerdctl /usr/local/bin/docker && \
