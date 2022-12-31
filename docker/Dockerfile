@@ -2,7 +2,7 @@ ARG IMAGE_TAG=jammy
 FROM docker.io/ubuntu:$IMAGE_TAG
 LABEL maintainer="MikeB <mike@donthurt.us>"
 
-ENV DEBIAN_FRONTEND=nointeractive
+ENV DEBIAN_FRONTEND=noninteractive
 ENV NERDCTL_VER=1.1.0
 
 RUN apt update && \
