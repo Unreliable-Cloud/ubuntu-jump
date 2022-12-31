@@ -5,10 +5,16 @@ LABEL maintainer="MikeB <mike@donthurt.us>"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV NERDCTL_VER=1.1.0
+ENV SSHD_CONFIG=/etc/ssh/sshd_config
 
 RUN apt update && \
     apt upgrade -y && \
     apt install -y openssh-server curl sudo vim git rsync zsh wget
+
+RUN sed -i 's/^#PermitRootLogin/PermitRootLogin/' "${SSHD_CONFIG}" && \
+    sed -i 's/^#SyslogFacility/SyslogFacility/' "${SSHD_CONFIG}" && \
+    sed -i 's/^#LogLevel/LogLevel/' "${SSHD_CONFIG}" && \
+    sed -i 's/^#PasswordAuthentication.*/PasswordAuthentication no/' "${SSHD_CONFIG}"
 
 RUN mkdir /root/.ssh && \
     chmod 0700 /root/.ssh && \
