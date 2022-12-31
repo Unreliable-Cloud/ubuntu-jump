@@ -1,9 +1,9 @@
 ARG IMAGE_TAG=jammy
-ARG NERDCTL_VER="1.1.0"
 FROM docker.io/ubuntu:$IMAGE_TAG
 LABEL maintainer="MikeB <mike@donthurt.us>"
 
 ENV DEBIAN_FRONTEND=nointeractive
+ENV NERDCTL_VER=1.1.0
 
 RUN apt update && \
     apt upgrade -y && \
@@ -23,8 +23,8 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | s
     apt update && \
     apt install -y gh
 
-RUN cd /root && wget https://github.com/containerd/nerdctl/releases/download/v$NERDCTL_VER/nerdctl-$NERDCTL_VER-linux-amd64.tar.gz && \
-    tar xzvf nerdctl-$NERDCTL_VER-linux-amd64.tar.gz && \
+RUN cd /root && wget https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VER}/nerdctl-${NERDCTL_VER}-linux-amd64.tar.gz && \
+    tar xzvf nerdctl-${NERDCTL_VER}-linux-amd64.tar.gz && \
     chmod +x nerdctl && \
     mv nerdctl /usr/local/bin/docker && \
     rm nerdctl* containerd-rootless*.sh
