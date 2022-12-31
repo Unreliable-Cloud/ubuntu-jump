@@ -51,8 +51,8 @@ spec:
             cpu: "1"
             memory: 1Gi
           requests:
-            cpu: 50m
-            memory: 64Mi
+            cpu: 150m
+            memory: 200Mi
         readinessProbe:
           tcpSocket:
             port: ssh
@@ -128,7 +128,7 @@ spec:
     protocol: TCP
     name: ssh
   type: LoadBalancer
-  externalTrafficPolicy: Cluster
+  externalTrafficPolicy: Local
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -177,19 +177,19 @@ spec:
       toPorts:
         - ports:
             - port: "443"
-              protocol: ANY
+              protocol: TCP
         - ports:
             - port: "22"
-              protocol: ANY
+              protocol: TCP
     - toFQDNs:
         - matchPattern: "*.ubuntu.com"
       toPorts:
         - ports:
             - port: "443"
-              protocol: ANY
+              protocol: TCP
         - ports:
             - port: "80"
-              protocol: ANY
+              protocol: TCP
     - toEndpoints:
         - matchLabels:
             io.kubernetes.pod.namespace: kube-system
