@@ -1,5 +1,5 @@
 ARG IMAGE_TAG=jammy
-ARG NERDCTL_VER=1.1.0
+ARG NERDCTL_VER="1.1.0"
 FROM docker.io/ubuntu:$IMAGE_TAG
 LABEL maintainer="MikeB <mike@donthurt.us>"
 
