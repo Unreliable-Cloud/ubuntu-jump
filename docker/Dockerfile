@@ -22,7 +22,7 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | s
     apt update && \
     apt install -y gh
 
-RUN curl https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz -o /root/nerdctl.tar.gz && \
+RUN cd /root && curl https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz && \
     cd /root && \
     tar xzvf nerdctl.tar.gz && \
     chmod +x nerdctl && \
