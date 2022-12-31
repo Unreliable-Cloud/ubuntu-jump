@@ -23,8 +23,7 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | s
     apt install -y gh
 
 RUN cd /root && curl https://github.com/containerd/nerdctl/releases/download/v1.1.0/nerdctl-1.1.0-linux-amd64.tar.gz && \
-    cd /root && \
-    tar xzvf nerdctl.tar.gz && \
+    tar xzvf nerdctl-1.1.0-linux-amd64.tar.gz && \
     chmod +x nerdctl && \
     mv nerdctl /usr/local/bin/docker && \
     rm nerdctl* containerd-rootless*.sh
