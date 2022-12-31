@@ -2,7 +2,7 @@ ARG IMAGE_TAG=jammy
 FROM docker.io/ubuntu:$IMAGE_TAG
 LABEL maintainer="MikeB <mike@donthurt.us>"
 
-RUN apt update && apt upgrade -y && apt-get install -y openssh-server curl sudo
+RUN apt update && apt upgrade -y && apt-get install -y openssh-server curl sudo vim git rsync
 RUN mkdir /root/.ssh && \
   chmod 0700 /root/.ssh && \
   ssh-keygen -t rsa -b 4096 -f /root/.ssh/id_rsa -N '' && \
