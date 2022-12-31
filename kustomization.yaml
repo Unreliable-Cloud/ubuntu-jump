@@ -5,5 +5,7 @@ images:
 - name: ubuntu-jump
   newName: docker.io/youvegotmoxie/ubuntu-jump
   newTag: dev
-resources:
-- ubuntu.yaml
+
+bases:
+- base/ubuntu.yaml
+- base/dockerhub-regcred.yaml
