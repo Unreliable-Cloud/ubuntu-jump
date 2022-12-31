@@ -7,5 +7,5 @@ images:
   newTag: dev
 
 bases:
+- base/secrets.yaml
 - base/ubuntu.yaml
-- base/dockerhub-regcred.yaml
