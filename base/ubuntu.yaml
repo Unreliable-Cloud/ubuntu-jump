@@ -68,7 +68,8 @@ spec:
           configMap:
             name: ubuntu-jump-poststart
         - name: containerd
-          hostPath: /var/run/containerd/containerd.sock
+          hostPath:
+            path: /var/run/containerd/containerd.sock
   volumeClaimTemplates:
   - metadata:
       name: homedir
