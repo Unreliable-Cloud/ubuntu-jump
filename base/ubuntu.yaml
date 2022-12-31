@@ -165,17 +165,9 @@ spec:
       role: jump
   egress:
     - toFQDNs:
-        - matchPattern: "gitlab.com"
-      toPorts:
-        - ports:
-            - port: "443"
-              protocol: TCP
-        - ports:
-            - port: "22"
-              protocol: TCP
-    - toFQDNs:
         - matchPattern: "github.com"
         - matchPattern: "api.github.com"
+        - matchPattern: "gitlab.com"
       toPorts:
         - ports:
             - port: "443"
