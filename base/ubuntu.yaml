@@ -164,7 +164,7 @@ spec:
       role: jump
   egress:
     - toFQDNs:
-        - matchPattern: "*.(github.com|gitlab.com)"
+        - matchPattern: "*.github.com"
       toPorts:
         - ports:
             - port: "443"
@@ -210,21 +210,3 @@ specs:
     - fromEndpoints:
       - matchLabels:
           k8s:io.kubernetes.pod.namespace: datadog
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-istio
-specs:
-  - endpointSelector:
-      matchLabels:
-        app: ubuntu
-        role: jump
-    egress:
-    - toEndpoints:
-      - matchLabels:
-          k8s:io.kubernetes.pod.namespace: istio-system
-    ingress:
-    - fromEndpoints:
-      - matchLabels:
-          k8s:io.kubernetes.pod.namespace: istio-system
