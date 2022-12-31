@@ -175,6 +175,7 @@ spec:
               protocol: TCP
     - toFQDNs:
         - matchPattern: "github.com"
+        - matchPattern: "api.github.com"
       toPorts:
         - ports:
             - port: "443"
