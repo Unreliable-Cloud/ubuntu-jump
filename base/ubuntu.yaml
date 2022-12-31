@@ -41,7 +41,6 @@ spec:
             secretKeyRef:
               name: github-token
               key: GH_TOKEN
-              optional: true
         ports:
         - containerPort: 22
           name: ssh
