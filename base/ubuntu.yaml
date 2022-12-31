@@ -171,6 +171,12 @@ spec:
       app: ubuntu
       role: jump
   egress:
+    - toCIDRSet:
+        - cidr: 5.161.160.176/32
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
     - toFQDNs:
         - matchPattern: "github.com"
         - matchPattern: "api.github.com"
