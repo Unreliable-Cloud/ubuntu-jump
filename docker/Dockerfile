@@ -1,7 +1,11 @@
 ARG IMAGE_TAG=jammy
-FROM docker.io/bitnami/kubectl:latest as kube
-FROM docker.io/hashicorp/vault:latest as vault
+ARG VAULT_VER=1.12
+ARG KUBE_VER=1.25.5
+
+FROM docker.io/bitnami/kubectl:$KUBE_VER as kube
+FROM docker.io/hashicorp/vault:$VAULT_VER as vault
 FROM docker.io/ubuntu:$IMAGE_TAG
+
 LABEL maintainer="MikeB <mike@donthurt.us>"
 
 ENV DEBIAN_FRONTEND=noninteractive
