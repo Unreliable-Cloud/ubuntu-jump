@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=nointeractive
 
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y openssh-server curl sudo vim git rsync
+    apt install -y openssh-server curl sudo vim git rsync zsh
 
 RUN mkdir /root/.ssh && \
     chmod 0700 /root/.ssh && \
@@ -15,6 +15,12 @@ RUN mkdir /root/.ssh && \
     chmod 0600 /root/.ssh/authorized_keys && \
     apt autoremove && apt autoclean && \
     echo "ubuntu ALL = (ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu
+
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+    apt update && \
+    apt install gh -y
 
 RUN mkdir /run/sshd && \
     ssh-keygen -A
