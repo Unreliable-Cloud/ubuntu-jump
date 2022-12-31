@@ -1,5 +1,6 @@
 ARG IMAGE_TAG=jammy
-FROM bitnami/kubectl:latest as kube
+FROM docker.io/bitnami/kubectl:latest as kube
+FROM docker.io/hashicorp/vault:latest as vault
 FROM docker.io/ubuntu:$IMAGE_TAG
 LABEL maintainer="MikeB <mike@donthurt.us>"
 
@@ -40,6 +41,7 @@ RUN mkdir /run/sshd && \
     ssh-keygen -A
 
 COPY --from=kube --chown=root:root /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/kubectl
+COPY --from=vault --chown=root:root /bin/vault /usr/local/bin/vault
 
 EXPOSE 22
 VOLUME [ "/home" ]
