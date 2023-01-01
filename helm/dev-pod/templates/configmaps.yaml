@@ -10,7 +10,7 @@ metadata:
 data:
   postStart.sh: |
     #!/bin/bash
-    if [[ -d /home/{{ $username }}) ]]; then
+    if [[ -d /home/{{ $username }} ]]; then
       echo "startup script: {{ $username }} user already exists"
       exit 0
     else
