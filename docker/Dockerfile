@@ -3,11 +3,13 @@ ARG VAULT_VER=1.12
 ARG KUBE_VER=1.25.5
 ARG TF_VER=1.3.6
 ARG PKR_VER=1.8.5
+ARG HELM_DOCS_VER=1.11.0
 
 FROM docker.io/bitnami/kubectl:$KUBE_VER as kube
 FROM docker.io/hashicorp/vault:$VAULT_VER as vault
 FROM docker.io/hashicorp/terraform:$TF_VER as terraform
 FROM docker.io/hashicorp/packer:$PKR_VER as pkr
+FROM docker.io/jnorwood/helm-docs:v$HELM_DOCS_VER as helm-docs
 FROM docker.io/ubuntu:$IMAGE_TAG
 
 LABEL maintainer="MikeB <mike@donthurt.us>"
@@ -17,6 +19,8 @@ ENV NERDCTL_VER=1.1.0
 ENV SSHD_CONFIG=/etc/ssh/sshd_config
 ENV KUBECOLOR_VER=0.0.25
 ENV HELM_VER=3.10.3
+
+WORKDIR /root
 
 # Setup dependencies
 RUN apt update && \
@@ -51,7 +55,7 @@ RUN wget https://github.com/hidetatz/kubecolor/releases/download/v${KUBECOLOR_VE
     chmod +x kubecolor && mv kubecolor /usr/local/bin && rm LICENSE README.md
 
 # Install Helm
-RUN cd /root && wget https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz && \
+RUN wget https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz && \
     tar xzvf helm-v${HELM_VER}-linux-amd64.tar.gz && \
     chmod +x linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/helm && \
     rm -rf linux-amd64 && rm helm-v${HELM_VER}-linux-amd64.tar.gz
@@ -60,11 +64,14 @@ RUN cd /root && wget https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz &&
 RUN mkdir /run/sshd && \
     ssh-keygen -A
 
+WORKDIR /
+
 # Install Vault and kubectl
 COPY --from=kube --chown=root:root /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/kubectl
 COPY --from=vault --chown=root:root /bin/vault /usr/local/bin/vault
 COPY --from=terraform --chown=root:root /bin/terraform /usr/local/bin/terraform
 COPY --from=pkr --chown=root:root /bin/packer /usr/local/bin/packer
+COPY --from=helm-docs --chown=root:root /usr/bin/helm-docs /usr/local/bin/helm-docs
 
 EXPOSE 22
 VOLUME [ "/home" ]
