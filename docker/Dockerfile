@@ -36,8 +36,10 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | s
     apt install -y gh && \
     apt autoclean && apt autoremove
 
-RUN cd /root && wget https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VER}/nerdctl-full-${NERDCTL_VER}-linux-amd64.tar.gz && \
-    tar Cxzvvf /usr/local nerdctl-full-${NERDCTL_VER}-linux-amd64.tar.gz
+## Disable for now. Not very useful
+#RUN cd /root && wget https://github.com/containerd/nerdctl/releases/download/v${NERDCTL_VER}/nerdctl-full-${NERDCTL_VER}-linux-amd64.tar.gz && \
+#    tar Cxzvvf /usr/local nerdctl-full-${NERDCTL_VER}-linux-amd64.tar.gz && \
+#    rm -f nerdctl-full-${NERDCTL_VER}-linux-amd64.tar.gz
 
 RUN mkdir /run/sshd && \
     ssh-keygen -A
