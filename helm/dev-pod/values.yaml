@@ -47,10 +47,8 @@ persistence:
   size: 50Gi
 
 resources:
-  limits:
-    cpu: "2"
   requests:
-    cpu: 100m
+    cpu: 200m
     memory: 700Mi
 
 nodeSelector: {}
