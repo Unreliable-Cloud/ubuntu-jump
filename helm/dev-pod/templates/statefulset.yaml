@@ -13,6 +13,8 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: ubuntu
       labels:
         {{- include "dev-pod.labels" . | nindent 8 }}
     spec:
