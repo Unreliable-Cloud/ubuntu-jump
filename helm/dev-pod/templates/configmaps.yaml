@@ -10,7 +10,7 @@ metadata:
 data:
   postStart.sh: |
     #!/bin/bash
-    if [[ $(id {{ $username }}) ]]; then
+    if [[ -d /home/{{ $username }}) ]]; then
       echo "startup script: {{ $username }} user already exists"
       exit 0
     else
@@ -23,18 +23,18 @@ data:
       cp /root/.ssh/authorized_keys ~{{ $username }}/.ssh/authorized_keys
       chmod 0600 ~{{ $username }}/.ssh/authorized_keys
       mkdir -p ~{{ $username }}/{{ .Values.devConfig.repoPath }}
-    fi
-    if [[ ! -f ~{{ $username }}/workspace.code-workspace ]]; then
+      mkdir -p ~{{ $username }}/scripts
+      cp /configs/*-install.sh ~{{ $username }}/scripts
+      chmod +x ~{{ $username }}/scripts/*-install.sh
       cp /configs/workspace.code-workspace ~{{ $username }}/workspace.code-workspace
-    fi
-    if [[ ! -f ~{{ $username }}/.ssh/id_ed25519 ]]; then
       cp /configs/id_ed25519 ~{{ $username }}/.ssh/id_ed25519
       chmod 0600 ~{{ $username }}/.ssh/id_ed25519
+      chown -Rv {{ $username }}: ~{{ $username }}
+      sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/omz-install.sh
+      sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/krew-install.sh
+      sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/powerline-install.sh
+      rm -rf ~{{ $username }}/scripts
     fi
-
-    cp /configs/*-install.sh ~{{ $username }}
-    chmod +x ~{{ $username }}/*-install.sh
-    chown -Rv {{ $username }}: ~{{ $username }}
 ---
 apiVersion: v1
 kind: ConfigMap
