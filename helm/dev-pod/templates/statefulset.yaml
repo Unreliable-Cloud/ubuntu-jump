@@ -85,7 +85,7 @@ spec:
   - metadata:
       name: homedir
       labels:
-        {{- include "dev-pod.labels" . | nindent 4 }}
+        {{- include "dev-pod.labels" . | nindent 8 }}
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: {{ .Values.persistence.storageClass }}
