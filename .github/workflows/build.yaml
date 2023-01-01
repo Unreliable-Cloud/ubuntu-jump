@@ -10,7 +10,7 @@ env:
   CONTEXT: docker
   REGISTRY_BASE: docker.io
   IMAGE_TAG: dev
-  VALUES_FILE: kustomization.yaml
+  VALUES_FILE: helm/dev-pod/values.yaml
 
 jobs:
   build-and-push:
@@ -48,7 +48,7 @@ jobs:
         if: github.event.pull_request.merged == true
         id: set_tag_name
         run: |
-          sed -i "s|newTag: [a-z].*|newTag: ${{ env.IMAGE_TAG }}|" ./${{ env.VALUES_FILE }}
+          sed -i "s|tag: [a-z].*|tag: ${{ env.IMAGE_TAG }}|" ./${{ env.VALUES_FILE }}
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: github.event.pull_request.merged == true
         with:

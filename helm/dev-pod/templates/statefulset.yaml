@@ -1,0 +1,93 @@
+{{ $name := include "dev-pod.name" . }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "dev-pod.fullname" . }}
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "dev-pod.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "dev-pod.fullname" . }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        {{- include "dev-pod.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dev-pod.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      - name: ubuntu
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/bash", "/usr/local/share/startup_scripts/postStart.sh"]
+        env:
+        - name: GH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-token
+              key: GH_TOKEN
+        ports:
+        - containerPort: {{ .Values.service.port }}
+          name: ssh
+          protocol: TCP
+        volumeMounts:
+        - name: homedir
+          mountPath: /home
+        - name: {{ $name }}-poststart
+          mountPath: /usr/local/share/startup_scripts
+        - name: containerd
+          mountPath: /var/run/containerd/containerd.sock
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        {{- with .Values.nodeSelector }}
+        nodeSelector:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.affinity }}
+        affinity:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+        tolerations:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        readinessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 10
+          periodSeconds: 20
+      volumes:
+        - name: {{ $name }}-poststart
+          configMap:
+            name: {{ $name }}-poststart
+        - name: containerd
+          hostPath:
+            path: /var/run/containerd/containerd.sock
+  volumeClaimTemplates:
+  - metadata:
+      name: homedir
+      labels:
+        {{- include "dev-pod.labels" . | nindent 4 }}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: hcloud-volumes
+      resources:
+        requests:
+          storage: 50Gi

@@ -1,0 +1,36 @@
+# Default values for dev-pod.
+
+image:
+  repository: docker.io/youvegotmoxie/ubuntu-jump
+  pullPolicy: Always
+  tag: "dev"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: LoadBalancer
+  port: 22
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 1Gi
+  requests:
+    cpu: 150m
+    memory: 200Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
