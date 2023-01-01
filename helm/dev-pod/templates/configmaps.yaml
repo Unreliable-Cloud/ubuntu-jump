@@ -1,4 +1,5 @@
 {{ $username := .Values.devConfig.user }}
+{{ $shell := .Values.devConfig.shell | default "/bin/bash" }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -14,7 +15,7 @@ data:
       exit 0
     else
       echo "startup script: configuring {{ $username }} user"
-      useradd -c "{{ $username }} user" -d /home/{{ $username }} -m -s /usr/bin/zsh -G sudo {{ $username }}
+      useradd -c "{{ $username }} user" -d /home/{{ $username }} -m -s {{ $shell }} -G sudo {{ $username }}
       mkdir -p ~{{ $username }}/.ssh
       touch ~{{ $username }}/.zshrc
       echo -e "export GH_TOKEN=${GH_TOKEN}" > ~{{ $username }}/.github.token

@@ -11,7 +11,8 @@ initContainer:
 
 devConfig:
   user: ubuntu
-  repoPath: "git"
+  repoPath: git
+  shell: "/usr/bin/zsh"
 
 imagePullSecrets: []
 nameOverride: ""
