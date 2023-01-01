@@ -4,7 +4,7 @@ kind: CiliumNetworkPolicy
 metadata:
   labels:
     {{- include "dev-pod.labels" . | nindent 4 }}
-  name: {{ include "dev-pod.name" . }}-allow-ingress-ssh
+  name: {{ .Release.Name }}-allow-ingress-ssh
 spec:
   endpointSelector:
     matchLabels:
@@ -22,7 +22,7 @@ kind: CiliumNetworkPolicy
 metadata:
   labels:
     {{- include "dev-pod.labels" . | nindent 4 }}
-  name: {{ include "dev-pod.name" . }}-allow-egress-apt-dns-ssh
+  name: {{ .Release.Name }}-allow-egress-apt-dns-ssh
 spec:
   endpointSelector:
     matchLabels:
@@ -61,7 +61,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: {{ include "dev-pod.name" . }}-allow-datadog
+  name: {{ .Release.Name }}-allow-datadog
   labels:
     {{- include "dev-pod.labels" . | nindent 4 }}
 specs:

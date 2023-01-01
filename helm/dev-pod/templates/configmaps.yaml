@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   labels:
     {{- include "dev-pod.labels" . | nindent 4 }}
-  name: {{ include "dev-pod.name" . }}-poststart
+  name: {{ .Release.Name }}-poststart
 data:
   postStart.sh: |
     #!/bin/bash
@@ -28,7 +28,7 @@ kind: ConfigMap
 metadata:
   labels:
     {{- include "dev-pod.labels" . | nindent 4 }}
-  name: {{ include "dev-pod.name" . }}-vscode-workspace
+  name: {{ .Release.Name }}-vscode-workspace
 data:
   workspace.code-workspace: |
     {

@@ -1,4 +1,4 @@
-{{ $name := include "dev-pod.name" . }}
+{{ $name := {{ .Release.Name }} }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet

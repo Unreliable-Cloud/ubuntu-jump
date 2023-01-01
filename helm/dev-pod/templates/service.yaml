@@ -9,7 +9,7 @@ metadata:
     load-balancer.hetzner.cloud/location: ash
     load-balancer.hetzner.cloud/protocol: tcp
     external-dns.alpha.kubernetes.io/hostname: {{ include "dev-pod.name" . }}.k8s.unreliable.cloud
-  name: {{ include "dev-pod.name" . }}-ssh
+  name: {{ .Release.Name }}-ssh
 spec:
   selector:
     {{- include "dev-pod.selectorLabels" . | nindent 4 }}
