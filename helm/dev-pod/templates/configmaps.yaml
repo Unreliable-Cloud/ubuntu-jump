@@ -32,8 +32,8 @@ data:
       chmod 0600 ~{{ $username }}/.ssh/id_ed25519
     fi
 
-    cp /configs/post-install.sh ~{{ $username }}/post-install.sh
-    chmod +x ~{{ $username }}/post-install.sh
+    cp /configs/*-install.sh ~{{ $username }}
+    chmod +x ~{{ $username }}/*-install.sh
     chown -Rv {{ $username }}: ~{{ $username }}
 ---
 apiVersion: v1
