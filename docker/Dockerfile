@@ -1,9 +1,13 @@
 ARG IMAGE_TAG=jammy
 ARG VAULT_VER=1.12
 ARG KUBE_VER=1.25.5
+ARG TF_VER=1.3.6
+ARG PKR_VER=1.8.5
 
 FROM docker.io/bitnami/kubectl:$KUBE_VER as kube
 FROM docker.io/hashicorp/vault:$VAULT_VER as vault
+FROM docker.io/hashicorp/terraform:$TF_VER as terraform
+FROM docker.io/hashicorp/packer:$PKR_VER as pkr
 FROM docker.io/ubuntu:$IMAGE_TAG
 
 LABEL maintainer="MikeB <mike@donthurt.us>"
@@ -17,7 +21,7 @@ ENV HELM_VER=3.10.3
 # Setup dependencies
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y openssh-server curl sudo vim git rsync zsh wget bash apt-transport-https
+    apt install -y openssh-server curl sudo vim git rsync zsh wget bash apt-transport-https python3 python3-pip
 
 # Configure SSH
 RUN sed -i 's/^#PermitRootLogin/PermitRootLogin/' "${SSHD_CONFIG}" && \
@@ -59,6 +63,8 @@ RUN mkdir /run/sshd && \
 # Install Vault and kubectl
 COPY --from=kube --chown=root:root /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/kubectl
 COPY --from=vault --chown=root:root /bin/vault /usr/local/bin/vault
+COPY --from=terraform --chown=root:root /bin/terraform /usr/local/bin/terraform
+COPY --from=pkr --chown=root:root /bin/packer /usr/local/bin/packer
 
 EXPOSE 22
 VOLUME [ "/home" ]
