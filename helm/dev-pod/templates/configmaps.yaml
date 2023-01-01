@@ -24,12 +24,12 @@ data:
       chmod 0600 ~{{ $username }}/.ssh/authorized_keys
       mkdir -p ~{{ $username }}/{{ .Values.devConfig.repoPath }}
       mkdir -p ~{{ $username }}/scripts
-      cp /configs/*-install.sh ~{{ $username }}/scripts
-      chmod +x ~{{ $username }}/scripts/*-install.sh
-      cp /configs/workspace.code-workspace ~{{ $username }}/workspace.code-workspace
-      cp /configs/id_ed25519 ~{{ $username }}/.ssh/id_ed25519
-      chmod 0600 ~{{ $username }}/.ssh/id_ed25519
       if [[ ! -d /home/{{ $username }}/{{ .Values.devConfig.repoPath }} ]]; then
+        cp /configs/*-install.sh ~{{ $username }}/scripts
+        chmod +x ~{{ $username }}/scripts/*-install.sh
+        cp /configs/workspace.code-workspace ~{{ $username }}/workspace.code-workspace
+        cp /configs/id_ed25519 ~{{ $username }}/.ssh/id_ed25519
+        chmod 0600 ~{{ $username }}/.ssh/id_ed25519
         sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/omz-install.sh
         sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/krew-install.sh
         sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/powerline-install.sh
