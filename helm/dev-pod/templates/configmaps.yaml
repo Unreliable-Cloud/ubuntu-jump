@@ -30,8 +30,8 @@ data:
         cp /configs/workspace.code-workspace ~{{ $username }}/workspace.code-workspace
         cp /configs/id_ed25519 ~{{ $username }}/.ssh/id_ed25519
         chmod 0600 ~{{ $username }}/.ssh/id_ed25519
-        sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/omz-install.sh
         sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/krew-install.sh
+        sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/omz-install.sh
         sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/powerline-install.sh
       fi
       chown -Rv {{ $username }}: ~{{ $username }}
