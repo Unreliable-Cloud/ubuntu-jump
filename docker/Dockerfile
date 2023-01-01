@@ -14,7 +14,7 @@ ENV SSHD_CONFIG=/etc/ssh/sshd_config
 
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y openssh-server curl sudo vim git rsync zsh wget
+    apt install -y openssh-server curl sudo vim git rsync zsh wget bash
 
 RUN sed -i 's/^#PermitRootLogin/PermitRootLogin/' "${SSHD_CONFIG}" && \
     sed -i 's/^#SyslogFacility/SyslogFacility/' "${SSHD_CONFIG}" && \
@@ -29,6 +29,8 @@ RUN mkdir /root/.ssh && \
     apt autoremove && apt autoclean && \
     echo "ubuntu ALL = (ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu
 
+## Linter complaint about pipes
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
     chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
