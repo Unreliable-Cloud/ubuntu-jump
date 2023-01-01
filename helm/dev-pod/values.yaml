@@ -11,6 +11,7 @@ initContainer:
 
 devConfig:
   user: ubuntu
+  repoPath: "git"
 
 imagePullSecrets: []
 nameOverride: ""
