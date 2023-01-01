@@ -9,6 +9,11 @@ initContainer:
   image: docker.io/busybox:latest
   configDir: configs
 
+job:
+  image:
+    repository: "docker.io/bitnami/kubectl"
+    tag: "1.25.5"
+
 devConfig:
   user: ubuntu
   repoPath: git
