@@ -9,6 +9,9 @@ initContainer:
   image: docker.io/busybox:latest
   configDir: configs
 
+devConfig:
+  user: ubuntu
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
