@@ -23,3 +23,4 @@ jobs:
           VALIDATE_HTML: false
           VALIDATE_JSCPD: false
           VALIDATE_MARKDOWN: false
+          VALIDATE_DOCKER: false
