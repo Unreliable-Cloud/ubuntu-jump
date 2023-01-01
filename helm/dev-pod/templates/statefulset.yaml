@@ -26,7 +26,7 @@ spec:
       initContainers:
       - name: configure-homedir
         image: {{ .Values.initContainer.image | quote }}
-        command: ["sh", "-c", "mkdir -vp /{{ .Values.initContainer.configDir }} && cp -v /etc/{{ .Values.initContainer.configDir }} /{{ .Values.initContainer.configDir }}/ && chmod -v 0700 /{{ .Values.initContainer.configDir }} && chown -Rv 1000:0 /{{ .Values.initContainer.configDir }}"]
+        command: ["sh", "-c", "mkdir -vp /{{ .Values.initContainer.configDir }} && cp -rv /etc/{{ .Values.initContainer.configDir }}/* /{{ .Values.initContainer.configDir }}/ && chmod -v 0700 /{{ .Values.initContainer.configDir }} && chown -Rv 1000:0 /{{ .Values.initContainer.configDir }}"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
         - name: configs-staging
