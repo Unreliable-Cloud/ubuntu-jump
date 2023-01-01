@@ -180,7 +180,8 @@ spec:
     - toFQDNs:
         - matchPattern: "github.com"
         - matchPattern: "api.github.com"
-        - matchPattern: "gitlab.com"
+        - matchPattern: "api.github.com"
+        - matchPattern: "cli.gitlab.com"
         - matchPattern: "*.githubusercontent.com"
       toPorts:
         - ports:
