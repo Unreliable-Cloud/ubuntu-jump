@@ -17,7 +17,7 @@ job:
 devConfig:
   user: ubuntu
   repoPath: git
-  shell: "/usr/bin/zsh"
+  shell: "/bin/bash"
   terminalFont: "MesloLGS NF"
 
 imagePullSecrets: []
@@ -29,7 +29,7 @@ serviceAccount:
   annotations: {}
   name: ""
 
-kubeApiServer: "5.161.160.176"
+kubeApiServer: "127.0.0.1"
 
 podAnnotations: {}
 
@@ -44,12 +44,12 @@ service:
 persistence:
   enabled: true
   storageClass: hcloud-volumes
-  size: 50Gi
+  size: 10Gi
 
 resources:
   requests:
-    cpu: 200m
-    memory: 700Mi
+    cpu: 50m
+    memory: 100Mi
 
 nodeSelector: {}
 tolerations: []

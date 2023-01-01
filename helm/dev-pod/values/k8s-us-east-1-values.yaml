@@ -1,0 +1,17 @@
+# k8s-us-east-1 values
+
+devConfig:
+  user: ubuntu
+  repoPath: git
+  shell: "/usr/bin/zsh"
+  terminalFont: "MesloLGS NF"
+
+kubeApiServer: "5.161.160.176"
+
+persistence:
+  size: 50Gi
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 700Mi
