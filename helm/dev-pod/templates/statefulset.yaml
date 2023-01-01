@@ -19,7 +19,7 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/dev-pod-name: {{ .Release.Name }}
         app.kubernetes.io/dev-pod-namespace: {{ .Release.Namespace }}
-        {{ include "dev-pod.selectorLabels" . }}
+        {{- include "dev-pod.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
