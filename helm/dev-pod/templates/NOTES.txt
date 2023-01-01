@@ -1,4 +1,15 @@
-Dev pod details:
+
+Details:
 
 Hostname: {{ .Release.Name }}-{{ .Release.Namespace }}.k8s.unreliable.cloud
 SSH port: {{ .Values.service.port }}
+
+Example ssh_config entry:
+
+Host {{ .Release.Name }}-{{ .Release.Namespace }}
+    Hostname {{ .Release.Name }}-{{ .Release.Namespace }}.k8s.unreliable.cloud
+    User {{ .Values.devConfig.user }}
+    Port {{ .Values.service.port }}
+    PubkeyAuthentication yes
+    IdentityFile ~/.ssh/id_rsa
+    StrictHostKeyChecking no
