@@ -16,7 +16,10 @@ spec:
       annotations:
         kubectl.kubernetes.io/default-container: ubuntu
       labels:
-        {{- include "dev-pod.labels" . | nindent 8 }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/dev-pod-name: {{ .Release.Name }}
+        app.kubernetes.io/dev-pod-namespace: {{ .Release.Namespace }}
+        {{ include "dev-pod.selectorLabels" . }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
