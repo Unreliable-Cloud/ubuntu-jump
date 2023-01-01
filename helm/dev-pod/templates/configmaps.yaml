@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  name: {{ include "dev-pod.name" . }}-poststart
+data:
+  postStart.sh: |
+    #!/bin/bash
+    if [[ $(id ubuntu) ]]; then
+      echo "startup script: user already exists"
+      exit 0
+    else
+      echo "startup script: configuring user"
+      useradd -c "Ubuntu user" -d /home/ubuntu -m -s /usr/bin/zsh -G sudo ubuntu
+      mkdir -p ~ubuntu/.ssh
+      touch ~ubuntu/.zshrc
+      echo -e "export GH_TOKEN=${GH_TOKEN}" > ~ubuntu/.github.token
+      chmod 0700 ~ubuntu/.ssh
+      cp /root/.ssh/authorized_keys ~ubuntu/.ssh/authorized_keys
+      chmod 0600 ~ubuntu/.ssh/authorized_keys
+    fi
+      chown -Rv ubuntu: ~ubuntu
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  name: {{ include "dev-pod.name" . }}-vscode-workspace
+data:
+  workspace.code-workspace: |
+    {
+            "folders": [
+                    {
+                            "path": "./git"
+                    }
+            ],
+            "settings": {
+                    "files.enableTrash": false,
+                    "terminal.integrated.fontFamily": "MesloLGS NF"
+            }
+    }
