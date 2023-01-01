@@ -1,0 +1,4 @@
+Dev pod details:
+
+Hostname: {{ .Release.Name }}.k8s.unreliable.cloud
+SSH port: {{ .Values.service.port }}
