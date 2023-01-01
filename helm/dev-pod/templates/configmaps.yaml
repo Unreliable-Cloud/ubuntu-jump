@@ -26,6 +26,10 @@ data:
     if [[ ! -f ~{{ $username }}/workspace.code-workspace ]]; then
       cp /configs/workspace.code-workspace ~{{ $username }}/workspace.code-workspace
     fi
+    if [[ ! -f ~{{ $username }}/.ssh/id_ed25519 ]]; then
+      cp /configs/id_ed25519 ~{{ $username }}/.ssh/id_ed25519
+      chmod 0600 ~{{ $username }}/.ssh/id_ed25519
+    fi
       chown -Rv {{ $username }}: ~{{ $username }}
 ---
 apiVersion: v1
