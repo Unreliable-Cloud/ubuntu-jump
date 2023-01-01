@@ -23,8 +23,6 @@ spec:
         image: {{ .Values.job.image.repository }}:{{ .Values.job.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command:
-          - kubectl
-          - label
-          - namespace {{ .Release.Namespace }} --overwrite app.kubernetes.io/dev-pod={{ .Release.Name }}
+          - kubectl label namespace {{ .Release.Namespace }} --overwrite app.kubernetes.io/dev-pod={{ .Release.Name }}
       serviceAccountName: {{ template "dev-pod.fullname" . }}-label-ns-job
       restartPolicy: Never
