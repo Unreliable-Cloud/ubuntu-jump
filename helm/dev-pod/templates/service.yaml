@@ -8,7 +8,7 @@ metadata:
     load-balancer.hetzner.cloud/ipv6-disabled: "true"
     load-balancer.hetzner.cloud/location: ash
     load-balancer.hetzner.cloud/protocol: tcp
-    external-dns.alpha.kubernetes.io/hostname: ubuntu-jump.k8s.unreliable.cloud
+    external-dns.alpha.kubernetes.io/hostname: {{ include "dev-pod.name" . }}.k8s.unreliable.cloud
   name: {{ include "dev-pod.name" . }}-ssh
 spec:
   selector:
