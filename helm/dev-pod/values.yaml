@@ -13,6 +13,7 @@ devConfig:
   user: ubuntu
   repoPath: git
   shell: "/usr/bin/zsh"
+  terminalFont: "MesloLGS NF"
 
 imagePullSecrets: []
 nameOverride: ""
