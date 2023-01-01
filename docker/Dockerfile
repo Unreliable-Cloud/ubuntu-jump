@@ -11,6 +11,7 @@ LABEL maintainer="MikeB <mike@donthurt.us>"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV NERDCTL_VER=1.1.0
 ENV SSHD_CONFIG=/etc/ssh/sshd_config
+ENV KUBECOLOR_VER=0.0.25
 
 RUN apt update && \
     apt upgrade -y && \
@@ -35,6 +36,10 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     apt update && \
     apt install -y gh && \
     apt autoclean && apt autoremove
+
+RUN wget https://github.com/hidetatz/kubecolor/releases/download/v${KUBECOLOR_VER}/kubecolor_${KUBECOLOR_VER}_Linux_x86_64.tar.gz && \
+    tar xzvf kubecolor_${KUBECOLOR_VER}_Linux_x86_64.tar.gz && \
+    chmod +x kubecolor && mv kubecolor /usr/local/bin && rm LICENSE README.md
 
 RUN mkdir /run/sshd && \
     ssh-keygen -A
