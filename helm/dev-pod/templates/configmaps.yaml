@@ -63,11 +63,12 @@ metadata:
     {{- include "dev-pod.labels" . | nindent 4 }}
   name: {{ .Release.Name }}-post-setup-script
 data:
-  post-install.sh: |
+  omz-install.sh: |
     #!/bin/bash
     # Oh my ZSH
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
+  krew-install.sh: |
+    #!/bin/bash
     # Krew
     (
       set -x; cd "$(mktemp -d)" &&
@@ -78,6 +79,7 @@ data:
       tar zxvf "${KREW}.tar.gz" &&
       ./"${KREW}" install krew
     )
-
+  powerline-install.sh: |
+    #!/bin/bash
     # Powerline10k
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k

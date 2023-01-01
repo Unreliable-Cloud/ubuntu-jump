@@ -37,9 +37,15 @@ spec:
         - name: ssh-key
           mountPath: "/etc/{{ .Values.initContainer.configDir }}/id_ed25519"
           subPath: id_ed25519
-        - name: post-setup-script
-          mountPath: "/etc/{{ .Values.initContainer.configDir }}/post-install.sh"
-          subPath: post-install.sh
+        - name: omz-install
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/omz-install.sh"
+          subPath: omz-install.sh
+        - name: krew-install
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/krew-install.sh"
+          subPath: krew-install.sh
+        - name: powerline-install
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/powerline-install"
+          subPath: powerline-install.sh
         - name: configs
           mountPath: "/{{ .Values.initContainer.configDir }}"
       containers:
@@ -106,12 +112,24 @@ spec:
             items:
             - key: workspace.code-workspace
               path: workspace.code-workspace
-        - name: post-setup-script
+        - name: omz-install
           configMap:
             name: {{ .Release.Name }}-post-setup-script
             items:
-            - key: post-install.sh
-              path: post-install.sh
+            - key: omz-install.sh
+              path: omz-install.sh
+        - name: krew-install
+          configMap:
+            name: {{ .Release.Name }}-post-setup-script
+            items:
+            - key: krew-install.sh
+              item: krew-install.sh
+        - name: powerline-install
+          configMap:
+            name: {{ .Release.Name }}-post-setup-script
+            items:
+            - key: powerline-install.sh
+              value: powerline-install.sh
         - name: configs
           emptyDir: {}
         - name: ssh-key
