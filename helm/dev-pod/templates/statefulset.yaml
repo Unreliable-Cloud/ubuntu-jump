@@ -1,4 +1,3 @@
-{{ $name := {{ .Release.Name }} }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -44,7 +43,7 @@ spec:
         volumeMounts:
         - name: homedir
           mountPath: /home
-        - name: {{ $name }}-poststart
+        - name: {{ .Release.Name }}-poststart
           mountPath: /usr/local/share/startup_scripts
         - name: containerd
           mountPath: /var/run/containerd/containerd.sock
@@ -74,9 +73,9 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 20
       volumes:
-        - name: {{ $name }}-poststart
+        - name: {{ .Release.Name }}-poststart
           configMap:
-            name: {{ $name }}-poststart
+            name: {{ .Release.Name }}-poststart
         - name: containerd
           hostPath:
             path: /var/run/containerd/containerd.sock
