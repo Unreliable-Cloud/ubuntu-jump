@@ -23,6 +23,16 @@ spec:
       serviceAccountName: {{ include "dev-pod.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+      - name: configure-homedir
+        image: {{ .Values.initContainer.image | quote }}
+        command: ["sh", "-c", "mkdir -vp /{{ .Values.initContainer.configDir }} && cp -v /etc/{{ .Values.initContainer.configDir }} /{{ .Values.initContainer.configDir }}/ && chmod -v 0700 /{{ .Values.initContainer.configDir }} && chown -Rv 1000:0 /{{ .Values.initContainer.configDir }}"]
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+        - name: configs-staging
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}"
+        - name: configs
+          mountPath: "/{{ .Values.initContainer.configDir }}"
       containers:
       - name: ubuntu
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -47,6 +57,8 @@ spec:
           mountPath: /usr/local/share/startup_scripts
         - name: containerd
           mountPath: /var/run/containerd/containerd.sock
+        - name: configs
+          mountPath: "/{{ .Values.initContainer.configDir }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
@@ -79,6 +91,12 @@ spec:
         - name: containerd
           hostPath:
             path: /var/run/containerd/containerd.sock
+        - name: configs-staging
+          configMap:
+            name: {{ .Release.Name }}-vscode-workspace
+        - name: configs
+          emptyDir: {}
+
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:

@@ -5,6 +5,10 @@ image:
   pullPolicy: Always
   tag: "dev"
 
+initContainer:
+  image: docker.io/busybox:latest
+  configDir: configs
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
