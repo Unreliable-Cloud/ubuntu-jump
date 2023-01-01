@@ -33,6 +33,7 @@ data:
         sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/krew-install.sh
         sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/omz-install.sh
         sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/powerline-install.sh
+        sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k/powerlevel10k"/' ~{{ $username }}/.zshrc
       fi
       chown -Rv {{ $username }}: ~{{ $username }}
     fi
