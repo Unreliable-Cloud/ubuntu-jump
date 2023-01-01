@@ -10,7 +10,7 @@ metadata:
 data:
   postStart.sh: |
     #!/bin/bash
-    if [[ -d /home/{{ $username }}/{{ .Values.devConfig.repoPath }} ]]; then
+    if [[ $(id {{ $username }}) ]]; then
       echo "startup script: {{ $username }} user already exists"
       exit 0
     else
@@ -29,11 +29,12 @@ data:
       cp /configs/workspace.code-workspace ~{{ $username }}/workspace.code-workspace
       cp /configs/id_ed25519 ~{{ $username }}/.ssh/id_ed25519
       chmod 0600 ~{{ $username }}/.ssh/id_ed25519
+      if [[ ! -d /home/{{ $username }}/{{ .Values.devConfig.repoPath }} ]]; then
+        sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/omz-install.sh
+        sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/krew-install.sh
+        sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/powerline-install.sh
+      fi
       chown -Rv {{ $username }}: ~{{ $username }}
-      sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/omz-install.sh
-      sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/krew-install.sh
-      sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/powerline-install.sh
-      rm -rf ~{{ $username }}/scripts
     fi
 ---
 apiVersion: v1
