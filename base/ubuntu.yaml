@@ -226,3 +226,23 @@ specs:
     - fromEndpoints:
       - matchLabels:
           k8s:io.kubernetes.pod.namespace: datadog
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: ubuntu
+    role: jump
+  name: vscode-workspace
+data:
+  workspace.code-workspace: |
+    {
+            "folders": [
+                    {
+                            "path": "./git"
+                    }
+            ],
+            "settings": {
+                    "files.enableTrash": false
+            }
+    }
