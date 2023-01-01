@@ -181,7 +181,7 @@ spec:
         - matchPattern: "github.com"
         - matchPattern: "api.github.com"
         - matchPattern: "api.github.com"
-        - matchPattern: "cli.gitlab.com"
+        - matchPattern: "cli.github.com"
         - matchPattern: "*.githubusercontent.com"
       toPorts:
         - ports:
