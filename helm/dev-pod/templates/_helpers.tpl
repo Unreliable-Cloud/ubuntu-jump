@@ -40,7 +40,8 @@ helm.sh/chart: {{ include "dev-pod.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/dev-pod: {{ .Release.Name }}
+app.kubernetes.io/dev-pod-name: {{ .Release.Name }}
+app.kubernetes.io/dev-pod-namespace: {{ .Release.Namespace }}
 {{- end }}
 
 {{/*
