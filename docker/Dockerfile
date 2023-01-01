@@ -12,6 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV NERDCTL_VER=1.1.0
 ENV SSHD_CONFIG=/etc/ssh/sshd_config
 ENV KUBECOLOR_VER=0.0.25
+ENV HELM_VER=3.10.3
 
 # Setup dependencies
 RUN apt update && \
@@ -37,7 +38,8 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
     apt update && \
-    apt install -y gh
+    apt install -y gh && \
+    apt autoclean && apt autoremove
 
 # Install Kubecolor
 RUN wget https://github.com/hidetatz/kubecolor/releases/download/v${KUBECOLOR_VER}/kubecolor_${KUBECOLOR_VER}_Linux_x86_64.tar.gz && \
@@ -45,11 +47,10 @@ RUN wget https://github.com/hidetatz/kubecolor/releases/download/v${KUBECOLOR_VE
     chmod +x kubecolor && mv kubecolor /usr/local/bin && rm LICENSE README.md
 
 # Install Helm
-RUN curl -fsSL https://baltocdn.com/helm/signing.asc | dd of=/usr/share/keyrings/helm.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list && \
-    apt update && \
-    apt install -y helm  && \
-    apt autoclean && apt autoremove
+RUN cd /root && wget https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz && \
+    tar xzvf helm-v${HELM_VER}-linux-amd64.tar.gz && \
+    chmod +x linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/helm && \
+    rm -rf linux-amd64 && rm helm-v${HELM_VER}-linux-amd64.tar.gz
 
 # Regenerate SSH host keys
 RUN mkdir /run/sshd && \
