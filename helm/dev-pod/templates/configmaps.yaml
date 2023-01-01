@@ -32,13 +32,13 @@ metadata:
 data:
   workspace.code-workspace: |
     {
-            "folders": [
-                    {
-                            "path": "./git"
-                    }
-            ],
-            "settings": {
-                    "files.enableTrash": false,
-                    "terminal.integrated.fontFamily": "MesloLGS NF"
-            }
+      "folders": [
+        {
+          "path": "./git"
+        }
+      ],
+      "settings": {
+        "files.enableTrash": false,
+        "terminal.integrated.fontFamily": "MesloLGS NF"
+      }
     }
