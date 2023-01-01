@@ -32,11 +32,11 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
         - name: configs-staging
-          mountPath: "/etc/{{ .Values.initContainer.configDir }}"
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/workspace.code-workspace"
           subPath: workspace.code-workspace
         - name: ssh-key
-          mountPath: "/etc/{{ .Values.initContainer.configDir }}"
-          subPath: id_id25519
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/id_ed25519"
+          subPath: id_ed25519
         - name: configs
           mountPath: "/{{ .Values.initContainer.configDir }}"
       containers:
