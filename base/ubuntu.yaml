@@ -183,6 +183,15 @@ spec:
         - matchPattern: "api.github.com"
         - matchPattern: "cli.github.com"
         - matchPattern: "*.githubusercontent.com"
+        - matchPattern: "*.visualstudio.com"
+        - matchPattern: "*.microsoft.com"
+        - matchPattern: "*.vsassets.io"
+        - matchPattern: "*.windows.net"
+        - matchPattern: "*.apphb.com"
+        - matchPattern: "*.vo.msecnd.net"
+        - matchPattern: "*.trafficmanager.net"
+        - matchPattern: "vscode.dev"
+        - matchPattern: "default.exp-tas.com"
       toPorts:
         - ports:
             - port: "443"
