@@ -22,8 +22,8 @@ data:
       cp /root/.ssh/authorized_keys ~{{ $username }}/.ssh/authorized_keys
       chmod 0600 ~{{ $username }}/.ssh/authorized_keys
     fi
-    if [[ ! -f /home/{{ $username }}/workspace.code-workspace ]]; then
-      cp /configs/workspace.code-workspace /home/{{ $username }}/workspace.code-workspace
+    if [[ ! -f ~{{ $username }}/workspace.code-workspace ]]; then
+      cp /configs/workspace.code-workspace ~{{ $username }}/workspace.code-workspace
     fi
       chown -Rv {{ $username }}: ~{{ $username }}
 ---
