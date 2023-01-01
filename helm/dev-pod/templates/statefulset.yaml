@@ -33,6 +33,10 @@ spec:
         volumeMounts:
         - name: configs-staging
           mountPath: "/etc/{{ .Values.initContainer.configDir }}"
+          subPath: workspace.code-workspace
+        - name: ssh-key
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}"
+          subPath: id_id25519
         - name: configs
           mountPath: "/{{ .Values.initContainer.configDir }}"
       containers:
@@ -101,6 +105,9 @@ spec:
               path: workspace.code-workspace
         - name: configs
           emptyDir: {}
+        - name: ssh-key
+          secret:
+            secretName: ssh-key
 
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
