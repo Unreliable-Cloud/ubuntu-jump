@@ -29,7 +29,7 @@ spec:
       {{- include "dev-pod.selectorLabels" . | nindent 6 }}
   egress:
     - toCIDRSet:
-        - cidr: 5.161.160.176/32
+        - cidr: {{ .Values.kubeApiServer }}/32
       toPorts:
         - ports:
             - port: "443"
