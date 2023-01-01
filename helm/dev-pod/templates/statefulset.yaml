@@ -57,6 +57,8 @@ spec:
           mountPath: /usr/local/share/startup_scripts
         - name: containerd
           mountPath: /var/run/containerd/containerd.sock
+        - name: configs
+          mountPath: "/{{ .Values.initContainer.configDir }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
