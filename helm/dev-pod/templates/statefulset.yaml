@@ -80,6 +80,7 @@ spec:
         - name: containerd
           hostPath:
             path: /var/run/containerd/containerd.sock
+  {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
       name: homedir
@@ -87,7 +88,8 @@ spec:
         {{- include "dev-pod.labels" . | nindent 4 }}
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: hcloud-volumes
+      storageClassName: {{ .Values.persistence.storageClass }}
       resources:
         requests:
-          storage: 50Gi
+          storage: {{ .Values.persistence.size }}
+  {{- end }}

@@ -22,6 +22,12 @@ securityContext: {}
 service:
   type: LoadBalancer
   port: 22
+  externalTrafficPolicy: Local
+
+persistence:
+  enabled: true
+  storageClass: hcloud-volumes
+  size: 50Gi
 
 resources:
   limits:
