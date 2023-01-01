@@ -44,7 +44,7 @@ spec:
           mountPath: "/etc/{{ .Values.initContainer.configDir }}/krew-install.sh"
           subPath: krew-install.sh
         - name: powerline-install
-          mountPath: "/etc/{{ .Values.initContainer.configDir }}/powerline-install"
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/powerline-install.sh"
           subPath: powerline-install.sh
         - name: configs
           mountPath: "/{{ .Values.initContainer.configDir }}"
