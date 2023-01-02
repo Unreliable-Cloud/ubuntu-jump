@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-    <h1>Deploy</h1>
-    <form action="{{ url_for("deploy")}}" method="post">
-        <label for="namespace">Namespace:</label>
-        <input type="text" id="namespace" name="namespace"><br><br>
-        <label for="deploymentName">Deployment name:</label>
-        <input type="text" id="deploymentName" name="deploymentName"><br><br>
-        <button type="submit">Create</button>
-      </form>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>DevPods</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div class="container">
+      <br><br>
+      <h1 class="header center darken-3">{{ appName }} Kubernetes Authentication</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">This utility will help you authenticate with your Kubernetes cluster with an OpenID Connect (OIDC) flow. Sign in to get started.</h5>
+          <form action="{{ url_for("deploy")}}" method="post">
+              <label for="namespace">Namespace:</label>
+              <input type="text" id="namespace" name="namespace"><br><br>
+              <label for="deploymentName">Deployment name:</label>
+              <input type="text" id="deploymentName" name="deploymentName"><br><br>
+              <button type="submit">Create</button>
+            </form>
+      </div>
+      <div class="row center">
+        <a href="/login" id="download-button" class="btn-large waves-effect waves-light blue">Sign In</a>
+      </div>
+      <br><br>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+  </body>
 </html>
