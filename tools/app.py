@@ -11,12 +11,11 @@ app = Flask(__name__)
 def root():
     return render_template('parent-root.html',
                             namespace=namespace,
-                            deploymentName=deploymentName,
-                            createOutput=dev_pod.deploy_dev_pod(namespace, deploymentName))
+                            deploymentName=deploymentName)
 
 @app.route("/deploy")
 def deploy():
-    pass
+    dev_pod.deploy_dev_pod(namespace, deploymentName)
 
 if __name__ == "__main__":
     app.run()
