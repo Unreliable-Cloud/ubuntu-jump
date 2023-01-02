@@ -25,7 +25,7 @@ WORKDIR /root
 # Setup dependencies
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y openssh-server curl sudo vim git rsync zsh wget bash apt-transport-https python3 python3-pip
+    apt install -y openssh-server curl sudo vim git rsync zsh wget bash apt-transport-https python3 python3-pip python3-venv
 
 # Configure SSH
 RUN sed -i 's/^#PermitRootLogin/PermitRootLogin/' "${SSHD_CONFIG}" && \
