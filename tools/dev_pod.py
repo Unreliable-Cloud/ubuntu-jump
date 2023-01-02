@@ -2,7 +2,7 @@ from avionix import ChartBuilder, ChartDependency, ChartInfo
 import yaml
 
 def deploy_dev_pod(namespace, deploymentName):
-  valuesFile = "/home/ubuntu/git/k8s/ubuntu-jump/tools/static/dev-pod-values.yaml"
+  valuesFile = "static/dev-pod-values.yaml"
   namespace = namespace
   deploymentName = deploymentName
 
