@@ -13,7 +13,7 @@ def root():
                             namespace=namespace,
                             deploymentName=deploymentName)
 
-@app.route("/deploy")
+@app.route("/deploy", methods =["GET", "POST"])
 def deploy(namespace, deploymentName):
     dev_pod.deploy_dev_pod(namespace, deploymentName)
 
