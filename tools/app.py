@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def root():
+    createPod = dev_pod.deploy_dev_pod(namespace, deploymentName)
     return render_template('parent-root.html',
                             namespace=namespace,
                             deploymentName=deploymentName,
@@ -16,8 +17,7 @@ def root():
 
 @app.route("/deploy")
 def deploy():
-    createPod = dev_pod.deploy_dev_pod(namespace, deploymentName)
-    return createPod
+    pass
 
 if __name__ == "__main__":
     app.run()
