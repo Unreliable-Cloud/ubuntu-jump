@@ -4,6 +4,7 @@ from flask import Flask, request, redirect, session, url_for, render_template, s
 namespace = ""
 deploymentName = ""
 createOutput = ""
+backupState = "Enabled"
 
 app = Flask(__name__)
 
@@ -23,7 +24,8 @@ def deploy():
 
         return render_template('parent-deploy.html',
                                 namespace=namespace,
-                                deploymentName=deploymentName)
+                                deploymentName=deploymentName,
+                                backupState=backupState)
 
 if __name__ == "__main__":
     app.run()
