@@ -2,3 +2,4 @@ ubuntu
 ubuntu.tgz
 tools/.venv
 __pycache__
+tools/__pycache__
