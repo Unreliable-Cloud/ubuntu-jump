@@ -24,7 +24,7 @@ def deploy_dev_pod(namespace, deploymentName):
               ChartDependency(
                   name="dev-pod",
                   version="0.0.3",
-                  repository="file:///home/ubuntu/git/k8s/ubuntu-jump/helm/dev-pod",
+                  repository="file://../helm/dev-pod",
                   local_repo_name="dev-pod",
                   is_local=True,
                   values=values,
