@@ -3,6 +3,7 @@ from flask import Flask, request, redirect, session, url_for, render_template, s
 
 namespace = ""
 deploymentName = ""
+createOutput = ""
 
 app = Flask(__name__)
 
@@ -14,8 +15,12 @@ def root():
                             deploymentName=deploymentName)
 
 @app.route("/deploy", methods =["GET", "POST"])
-def deploy(namespace, deploymentName):
-    dev_pod.deploy_dev_pod(namespace, deploymentName)
+def deploy():
+    if request.method == "POST":
+        namespace = request.form.get("namespace")
+        deploymentName = request.form.get("deploymentName")
+        createOutput = dev_pod.deploy_dev_pod(namespace, deploymentName)
+        return createOutput
 
 if __name__ == "__main__":
     app.run()
