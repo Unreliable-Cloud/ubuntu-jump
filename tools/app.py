@@ -19,10 +19,11 @@ def deploy():
     if request.method == "POST":
         namespace = request.form.get("namespace")
         deploymentName = request.form.get("deploymentName")
-        createPod = dev_pod.deploy_dev_pod(namespace, deploymentName)
+        dev_pod.deploy_dev_pod(namespace, deploymentName)
 
         return render_template('parent-deploy.html',
-                                createOutput=createPod)
+                                namespace=namespace,
+                                deploymentName=deploymentName)
 
 if __name__ == "__main__":
     app.run()
