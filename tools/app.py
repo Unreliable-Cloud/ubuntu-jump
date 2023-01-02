@@ -1,8 +1,8 @@
 import dev_pod
 from flask import Flask, request, redirect, session, url_for, render_template, send_from_directory, send_file, Response
 
-namespace = "test-pod-0"
-deploymentName = "testing-pod"
+namespace = ""
+deploymentName = ""
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def root():
                             deploymentName=deploymentName)
 
 @app.route("/deploy")
-def deploy():
+def deploy(namespace, deploymentName):
     dev_pod.deploy_dev_pod(namespace, deploymentName)
 
 if __name__ == "__main__":
