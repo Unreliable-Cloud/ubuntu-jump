@@ -19,8 +19,9 @@ def deploy():
     if request.method == "POST":
         namespace = request.form.get("namespace")
         deploymentName = request.form.get("deploymentName")
-        createOutput = dev_pod.deploy_dev_pod(namespace, deploymentName)
-        return createOutput
+        dev_pod.deploy_dev_pod(namespace, deploymentName)
+
+    return deploy
 
 if __name__ == "__main__":
     app.run()
