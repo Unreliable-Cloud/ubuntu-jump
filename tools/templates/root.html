@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-    <h1>{{ namespace : deploymentName }}</h1>
+    <h1>Deploy</h1>
+    <form action="/deploy">
+        <label for="namespace">Namespace:</label>
+        <input type="text" id="namespace" name="namespace"><br><br>
+        <label for="deploymentName">Last name:</label>
+        <input type="text" id="deploymentName" name="deploymentName"><br><br>
+        <input type="submit" value="Submit">
+      </form>
     <body>{{ createOutput }}</body>
 </html>
