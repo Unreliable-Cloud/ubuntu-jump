@@ -23,7 +23,7 @@ def deploy():
         backupState = request.form.get("backupState")
         dev_pod.deploy_dev_pod(namespace, deploymentName, backupState)
 
-        return render_template('deploy.html',
+        return render_template('parent-deploy.html',
                                 namespace=namespace,
                                 deploymentName=deploymentName,
                                 backupState=backupState)
