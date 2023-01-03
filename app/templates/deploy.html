@@ -22,7 +22,7 @@
     <nav class="light-blue blue" role="navigation">
       <ul class="right hide-on-med-and-down">
         {% for item in menu_items %}
-        <li><a href="{{ item['path'] }}">{{ item['entry'] }}</a></li>
+        <li><a href="{{ item|lower }}">{{ item}}</a></li>
         {% endfor %}
       </ul>
     </nav>
