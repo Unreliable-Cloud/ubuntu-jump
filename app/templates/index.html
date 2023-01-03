@@ -13,8 +13,8 @@
 <body>
   <nav class="light-blue blue" role="navigation">
     <ul class="right hide-on-med-and-down">
-      {% for item in ["Home", "Deploy"] %}
-      <li><a href="/">{{ item }}</a></li>
+      {% for item in menu_items %}
+      <li><a href="/">{{ menu_item }}</a></li>
       {% endfor %}
     </ul>
   </nav>
