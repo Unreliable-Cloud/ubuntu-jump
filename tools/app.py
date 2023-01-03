@@ -13,7 +13,8 @@ app = Flask(__name__)
 def root():
     return render_template('index.html',
                             namespace=namespace,
-                            deploymentName=deploymentName)
+                            deploymentName=deploymentName,
+                            backupState=backupState)
 
 @app.route("/deploy", methods =["GET", "POST"])
 def deploy():
