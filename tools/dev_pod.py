@@ -1,10 +1,11 @@
 from avionix import ChartBuilder, ChartDependency, ChartInfo
 import yaml
 
-def deploy_dev_pod(namespace, deploymentName):
+def deploy_dev_pod(namespace, deploymentName, backupState):
   valuesFile = "static/dev-pod-values.yaml"
   namespace = namespace
   deploymentName = deploymentName
+  backupState = backupState
 
   print("Reading values..")
 
@@ -12,7 +13,7 @@ def deploy_dev_pod(namespace, deploymentName):
       values = yaml.load(f.read(), Loader=yaml.FullLoader)
       f.close()
 
-  print(f"deploying pod deployed. namespace: {namespace} - name: {deploymentName}")
+  print(f"deploying pod deployed. namespace: {namespace} - name: {deploymentName} - with backups: {backupState}")
 
   builder = ChartBuilder(
       ChartInfo(
@@ -34,5 +35,5 @@ def deploy_dev_pod(namespace, deploymentName):
       [],
   )
 
-  builder.install_chart(options={"namespace": namespace, "create-namespace": None, "dependency-update": None, "debug": None})
+  #builder.install_chart(options={"namespace": namespace, "create-namespace": None, "dependency-update": None, "debug": None})
   print(f"dev pod deployed. namespace: {namespace} - name: {deploymentName}")

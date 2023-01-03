@@ -4,14 +4,14 @@ from flask import Flask, request, redirect, session, url_for, render_template, s
 namespace = ""
 deploymentName = ""
 createOutput = ""
-backupState = "Enabled"
+backupState = ""
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def root():
-    return render_template('parent-root.html',
+    return render_template('index.html',
                             namespace=namespace,
                             deploymentName=deploymentName)
 
@@ -20,9 +20,10 @@ def deploy():
     if request.method == "POST":
         namespace = request.form.get("namespace")
         deploymentName = request.form.get("deploymentName")
+        backupState = request.form.get("backupState")
         dev_pod.deploy_dev_pod(namespace, deploymentName)
 
-        return render_template('parent-deploy.html',
+        return render_template('deploy.html',
                                 namespace=namespace,
                                 deploymentName=deploymentName,
                                 backupState=backupState)
