@@ -21,7 +21,7 @@ def deploy():
         namespace = request.form.get("namespace")
         deploymentName = request.form.get("deploymentName")
         backupState = request.form.get("backupState")
-        dev_pod.deploy_dev_pod(namespace, deploymentName)
+        dev_pod.deploy_dev_pod(namespace, deploymentName, backupState)
 
         return render_template('deploy.html',
                                 namespace=namespace,
