@@ -18,12 +18,16 @@
           <form class="col s12" action="{{ url_for("deploy")}}" method="post">
             <div class="row">
               <div class="input-field col s6">
-                <label for="namespace">Namespace</label><br>
-                <input for="namespace" id="namespace" name="namespace" type="text" placeholder="my-dev-namespace">
+                <div class="center-align s6">
+                  <label for="namespace">Namespace</label><br>
+                  <input for="namespace" id="namespace" name="namespace" type="text" placeholder="my-dev-namespace">
+               </div>
               </div>
               <div class="input-field col s6">
-                <label for="deploymentName">Deployment Name</label><br>
-                <input for="deploymentName" id="deploymentName" name="deploymentName" type="text" placeholder="ubuntu-2204-testing">
+                <div class="center-align s6">
+                  <label for="deploymentName">Deployment Name</label><br>
+                  <input for="deploymentName" id="deploymentName" name="deploymentName" type="text" placeholder="ubuntu-2204-testing">
+                </div>
               </div>
               <div class="row center">
                 <h5 class="header col s12 light">Enable Backups</h5>
