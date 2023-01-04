@@ -1,0 +1,14 @@
+{{- if .Values.velero.enabled }}
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  name: {{ include "dev-pod.fullname" . }}-backup
+  namespace: velero
+spec:
+{{- with .Values.velero.backupSchedule }}
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}

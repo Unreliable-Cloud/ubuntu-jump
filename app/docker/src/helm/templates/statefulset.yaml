@@ -1,0 +1,156 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "dev-pod.fullname" . }}
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "dev-pod.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "dev-pod.fullname" . }}
+  replicas: 1
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/dev-pod-name: {{ .Release.Name }}
+        app.kubernetes.io/dev-pod-namespace: {{ .Release.Namespace }}
+        {{- include "dev-pod.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dev-pod.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+      - name: configure-homedir
+        image: {{ .Values.initContainer.image | quote }}
+        command: ["sh", "-c", "mkdir -pv /{{ .Values.initContainer.configDir }} && cp -v /etc/{{ .Values.initContainer.configDir }}/* /{{ .Values.initContainer.configDir }}/ && chmod -v 0700 /{{ .Values.initContainer.configDir }} && chown -Rv 1000:0 /{{ .Values.initContainer.configDir }}"]
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+        - name: configs-staging
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/workspace.code-workspace"
+          subPath: workspace.code-workspace
+        - name: ssh-key
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/id_ed25519"
+          subPath: id_ed25519
+        - name: omz-install
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/omz-install.sh"
+          subPath: omz-install.sh
+        - name: krew-install
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/krew-install.sh"
+          subPath: krew-install.sh
+        - name: powerline-install
+          mountPath: "/etc/{{ .Values.initContainer.configDir }}/powerline-install.sh"
+          subPath: powerline-install.sh
+        - name: configs
+          mountPath: "/{{ .Values.initContainer.configDir }}"
+      containers:
+      - name: ubuntu
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/bash", "/usr/local/share/startup_scripts/postStart.sh"]
+        env:
+        - name: GH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-token
+              key: GH_TOKEN
+        ports:
+        - containerPort: {{ .Values.service.port }}
+          name: ssh
+          protocol: TCP
+        volumeMounts:
+        - name: homedir
+          mountPath: /home
+        - name: {{ .Release.Name }}-poststart
+          mountPath: /usr/local/share/startup_scripts
+        - name: containerd
+          mountPath: /var/run/containerd/containerd.sock
+        - name: configs
+          mountPath: "/{{ .Values.initContainer.configDir }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        {{- with .Values.nodeSelector }}
+        nodeSelector:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.affinity }}
+        affinity:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+        tolerations:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        readinessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 10
+          periodSeconds: 20
+      volumes:
+        - name: {{ .Release.Name }}-poststart
+          configMap:
+            name: {{ .Release.Name }}-poststart
+        - name: containerd
+          hostPath:
+            path: /var/run/containerd/containerd.sock
+        - name: configs-staging
+          configMap:
+            name: {{ .Release.Name }}-vscode-workspace
+            items:
+            - key: workspace.code-workspace
+              path: workspace.code-workspace
+        - name: omz-install
+          configMap:
+            name: {{ .Release.Name }}-post-setup-script
+            items:
+            - key: omz-install.sh
+              path: omz-install.sh
+        - name: krew-install
+          configMap:
+            name: {{ .Release.Name }}-post-setup-script
+            items:
+            - key: krew-install.sh
+              path: krew-install.sh
+        - name: powerline-install
+          configMap:
+            name: {{ .Release.Name }}-post-setup-script
+            items:
+            - key: powerline-install.sh
+              path: powerline-install.sh
+        - name: configs
+          emptyDir: {}
+        - name: ssh-key
+          secret:
+            secretName: ssh-key
+
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: homedir
+      labels:
+        {{- include "dev-pod.labels" . | nindent 8 }}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size }}
+  {{- end }}

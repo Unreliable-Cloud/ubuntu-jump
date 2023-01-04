@@ -12,13 +12,6 @@ def deploy_dev_pod(namespace=str, deploymentName=str, backupState=str):
 
   with open(valuesFile) as f:
       values = yaml.load(f.read(), Loader=yaml.FullLoader)
-      f.close()
-
-  logOutput = {"backups": backupState,
-               "namespace": namespace,
-               "deployment_name": deploymentName}
-
-  output = print(logOutput)
 
   builder = ChartBuilder(
       ChartInfo(
@@ -30,7 +23,7 @@ def deploy_dev_pod(namespace=str, deploymentName=str, backupState=str):
               ChartDependency(
                   name="dev-pod",
                   version="0.0.3",
-                  repository="file://../../helm/dev-pod",
+                  repository="file://helm",
                   local_repo_name="dev-pod",
                   is_local=True,
                   values=values,
@@ -41,4 +34,5 @@ def deploy_dev_pod(namespace=str, deploymentName=str, backupState=str):
   )
 
   #builder.install_chart(options={"namespace": namespace, "create-namespace": None, "dependency-update": None, "debug": None})
-  return output
+  return print(values)
+  f.close()
