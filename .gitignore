@@ -4,3 +4,5 @@ tools/.venv
 __pycache__
 tools/__pycache__
 app/.venv
+app/__pycache__
+app/docker/__pycache__
