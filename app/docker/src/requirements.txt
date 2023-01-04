@@ -1,5 +1,5 @@
 avionix==0.4.5
 Flask==2.2.2
-pyyaml==6.0
-gunicorn==20.1.0
+pyyaml>=6.0
+gunicorn>=20.1.0
 flask-login==0.6.2
