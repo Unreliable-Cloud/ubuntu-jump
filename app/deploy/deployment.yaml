@@ -27,15 +27,3 @@ spec:
         readinessProbe:
           httpGet:
             port: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: devpod
-spec:
-  selector:
-    app: devpod
-  ports:
-  - port: 8000
-    targetPort: 8000
-
