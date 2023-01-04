@@ -14,7 +14,7 @@
   <nav class="light-blue blue" role="navigation">
     <ul class="right hide-on-med-and-down">
       {% for item in menu_items %}
-      <li><a href="/{{ item | lower }}">{{ item }}</a></li>
+      <li><a href="/{{ item[0] | lower }}">{{ item[1] }}</a></li>
       {% endfor %}
     </ul>
   </nav>
