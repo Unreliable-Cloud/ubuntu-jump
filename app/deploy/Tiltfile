@@ -12,9 +12,6 @@ docker_build(
   ]
 )
 
-if k8s_namespace() == "default":
-  print("Do not deploy to the default namespace")
-
 # Deploy to k8s
 k8s_yaml(['deployment.yaml'])
 k8s_resource(

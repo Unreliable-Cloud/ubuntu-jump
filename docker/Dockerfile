@@ -4,12 +4,14 @@ ARG KUBE_VER=1.25.5
 ARG TF_VER=1.3.6
 ARG PKR_VER=1.8.5
 ARG HELM_DOCS_VER=1.11.0
+ARG TILT_VER=0.30.13
 
 FROM docker.io/bitnami/kubectl:$KUBE_VER as kube
 FROM docker.io/hashicorp/vault:$VAULT_VER as vault
 FROM docker.io/hashicorp/terraform:$TF_VER as terraform
 FROM docker.io/hashicorp/packer:$PKR_VER as pkr
 FROM docker.io/jnorwood/helm-docs:v$HELM_DOCS_VER as helm-docs
+FROM docker.io/tiltdev/tilt:v$TILT_VER as tilt
 FROM docker.io/ubuntu:$IMAGE_TAG
 
 LABEL maintainer="MikeB <mike@donthurt.us>"
@@ -25,7 +27,8 @@ WORKDIR /root
 # Setup dependencies
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y openssh-server curl sudo vim git rsync zsh wget bash apt-transport-https python3 python3-pip python3-venv
+    apt install -y openssh-server curl sudo vim git rsync zsh wget bash apt-transport-https \
+        python3 python3-pip python3-venv ca-certificates lsb-release gnupg
 
 # Configure SSH
 RUN sed -i 's/^#PermitRootLogin/PermitRootLogin/' "${SSHD_CONFIG}" && \
@@ -59,6 +62,15 @@ RUN wget https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz && \
     chmod +x linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/helm && \
     rm -rf linux-amd64 && rm helm-v${HELM_VER}-linux-amd64.tar.gz
 
+# Install Docker
+RUN mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    echo \
+        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+        apt update && apt install -y docker-ce-cli docker-compose-plugin && \
+        apt autoclean && apt autoremove
+
 # Regenerate SSH host keys
 RUN mkdir /run/sshd && \
     ssh-keygen -A
@@ -71,6 +83,7 @@ COPY --from=vault --chown=root:root /bin/vault /usr/local/bin/vault
 COPY --from=terraform --chown=root:root /bin/terraform /usr/local/bin/terraform
 COPY --from=pkr --chown=root:root /bin/packer /usr/local/bin/packer
 COPY --from=helm-docs --chown=root:root /usr/bin/helm-docs /usr/local/bin/helm-docs
+COPY --from=tilt --chown=root:root /usr/local/bin/tilt /usr/local/bin/tilt
 
 EXPOSE 22
 VOLUME [ "/home" ]
