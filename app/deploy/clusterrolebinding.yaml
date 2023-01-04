@@ -4,15 +4,14 @@ kind: ServiceAccount
 metadata:
   labels:
     app: devpod
-  name: devpod-admin
-  namespace: default
+  name: devpod
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
     app: devpod
-  name: devpod-admin
+  name: devpod
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

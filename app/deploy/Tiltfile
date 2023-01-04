@@ -28,5 +28,6 @@ k8s_yaml(['deployment.yaml', 'service.yaml', 'clusterrolebinding.yaml'])
 k8s_resource(
   workload = 'devpod',
   labels = ['devpod'],
+  objects=['devpod:serviceaccount:default', 'devpod:clusterrolebinding'],
   pod_readiness = 'wait'
 )
