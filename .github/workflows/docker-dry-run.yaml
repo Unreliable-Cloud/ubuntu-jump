@@ -1,0 +1,25 @@
+---
+name: Build Container (Test)
+on:
+  pull_request:
+    branches: [master, main]
+
+env:
+  REGISTRY: youvegotmoxie
+  IMAGE_NAME: ubuntu-jump
+  CONTEXT: docker
+  REGISTRY_BASE: docker.io
+  IMAGE_TAG: testing
+
+jobs:
+  build-to-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+      - uses: docker/build-push-action@v3
+        if: github.event.pull_request.merged == true
+        with:
+          push: false
+          tags: ${{ env.REGISTRY_BASE }}/${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          context: ${{ env.CONTEXT }}
