@@ -48,12 +48,6 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     apt update && \
     apt install -y gh
 
-# Install Ansible
-RUN apt install software-properties-common && \
-    add-apt-repository --yes --update ppa:ansible/ansible && \
-    apt install -y ansible && \
-    apt autoclean && apt autoremove
-
 # Install Kubecolor
 RUN wget https://github.com/hidetatz/kubecolor/releases/download/v${KUBECOLOR_VER}/kubecolor_${KUBECOLOR_VER}_Linux_x86_64.tar.gz && \
     tar xzvf kubecolor_${KUBECOLOR_VER}_Linux_x86_64.tar.gz && \
