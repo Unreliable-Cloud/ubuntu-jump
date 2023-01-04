@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>DevPods</title>
+
+  <!-- Init CSS -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="static/css/main.css">
+</head>
+<body>
+  <nav class="light-blue blue" role="navigation">
+    <ul class="right hide-on-med-and-down">
+      {% for item in menu_items %}
+      <li><a href="/{{ item | lower }}">{{ item }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+    <div class="container">
+      <br><br><br><br>
+      <h1 class="header center-align darken-3">create something</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Enter the deployment details below</h5>
+        <div class="row centered">
+          <form class="col s12" action="{{ url_for('deploy') }}" method="post">
+            <div class="row">
+              <div class="input-field col s6">
+                <div class="center-align s6">
+                  <label for="namespace">Namespace</label><br>
+                  <input class="center-align" for="namespace" id="namespace" name="namespace" type="text" placeholder="my-dev-namespace">
+               </div>
+              </div>
+              <div class="input-field col s6">
+                <div class="center-align s6">
+                  <label for="deploymentName">Deployment Name</label><br>
+                  <input class="center-align" for="deploymentName" id="deploymentName" name="deploymentName" type="text" placeholder="ubuntu-2204-testing">
+                </div>
+              </div>
+              <div class="row center">
+                <h5 class="header col s12 light">Enable Backups</h5>
+              </div>
+              <div class="switch">
+                <label for="backupState">
+                  Disable
+                  <input id="backupState" name="backupState" type="checkbox">
+                  <span class="lever"></span>
+                  Enable
+                </label>
+              </div>
+              <div class="row centered"><br><br>
+                <button class="btn-large waves-effect waves-light blue" type="submit">Create</button>
+              </div>
+          </form>
+        </div>
+    </div>
+  </div>
+  </body>
+</html>
