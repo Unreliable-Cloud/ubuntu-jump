@@ -26,5 +26,3 @@ k8s_resource(
   labels = ['devpod'],
   pod_readiness = 'wait'
 )
-
-readyProbe = http_get_action(port=8000, host="devpod-dev.k8s.unreliable.cloud")
