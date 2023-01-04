@@ -1,0 +1,60 @@
+# Default values for dev-pod.
+
+image:
+  repository: docker.io/youvegotmoxie/ubuntu-jump
+  pullPolicy: Always
+  tag: "dev"
+
+initContainer:
+  image: docker.io/busybox:latest
+  configDir: configs
+
+job:
+  image:
+    repository: "docker.io/bitnami/kubectl"
+    tag: "1.25.5"
+
+devConfig:
+  user: ubuntu
+  repoPath: git
+  shell: "/bin/bash"
+  terminalFont: "MesloLGS NF"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+kubeApiServer: "127.0.0.1"
+
+podAnnotations: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: LoadBalancer
+  port: 22
+  externalTrafficPolicy: Local
+
+persistence:
+  enabled: true
+  storageClass: hcloud-volumes
+  size: 10Gi
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+
+velero:
+  enabled: false
+  backupSchedule: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

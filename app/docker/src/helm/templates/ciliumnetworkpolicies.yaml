@@ -1,0 +1,78 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  name: {{ .Release.Name }}-allow-ingress-ssh
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "dev-pod.selectorLabels" . | nindent 6 }}
+  ingress:
+    - fromCIDRSet:
+        - cidr: 0.0.0.0/0
+      toPorts:
+        - ports:
+            - port: "22"
+              protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  name: {{ .Release.Name }}-allow-egress-apt-dns-ssh
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "dev-pod.selectorLabels" . | nindent 6 }}
+  egress:
+    - toCIDRSet:
+        - cidr: {{ .Values.kubeApiServer }}/32
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+    - toFQDNs:
+        - matchPattern: "*"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+        - ports:
+            - port: "22"
+              protocol: TCP
+        - ports:
+            - port: "80"
+              protocol: TCP
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-allow-datadog
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+specs:
+  - endpointSelector:
+      matchLabels:
+        {{- include "dev-pod.selectorLabels" . | nindent 8 }}
+    egress:
+    - toEndpoints:
+      - matchLabels:
+          k8s:io.kubernetes.pod.namespace: datadog
+    ingress:
+    - fromEndpoints:
+      - matchLabels:
+          k8s:io.kubernetes.pod.namespace: datadog

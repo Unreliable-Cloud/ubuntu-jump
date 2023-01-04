@@ -1,5 +1,5 @@
 import dev_pod
-from flask import Flask, request, redirect, session, url_for, render_template, send_from_directory, send_file, Response
+from flask import Flask, request, redirect, url_for, render_template
 
 namespace = ""
 deploymentName = ""
@@ -29,4 +29,4 @@ def deploy():
                                 backupState=backupState)
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port='8000', debug=True)
+    app.run(host='0.0.0.0', port='8000', debug=True)

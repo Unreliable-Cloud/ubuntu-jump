@@ -1,0 +1,27 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "dev-pod.fullname" . }}-label-ns-job
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 1
+  completions: 1
+  parallelism: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "dev-pod.fullname" . }}-job
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: label-ns
+        image: {{ .Values.job.image.repository }}:{{ .Values.job.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["bash", "-c", "kubectl label namespace {{ .Release.Namespace }} --overwrite app.kubernetes.io/part-of=dev-pod"]
+      serviceAccountName: {{ template "dev-pod.fullname" . }}-label-ns-job
+      restartPolicy: Never

@@ -1,0 +1,89 @@
+{{ $username := .Values.devConfig.user }}
+{{ $shell := .Values.devConfig.shell | default "/bin/bash" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  name: {{ .Release.Name }}-poststart
+data:
+  postStart.sh: |
+    #!/bin/bash
+    if [[ $(id {{ $username }}) ]]; then
+      echo "startup script: {{ $username }} user already exists"
+      exit 0
+    else
+      echo "startup script: configuring {{ $username }} user"
+      useradd -c "{{ $username }} user" -d /home/{{ $username }} -m -s {{ $shell }} -G sudo {{ $username }}
+      mkdir -p ~{{ $username }}/.ssh
+      touch ~{{ $username }}/.zshrc
+      echo -e "export GH_TOKEN=${GH_TOKEN}" > ~{{ $username }}/.github.token
+      chmod 0700 ~{{ $username }}/.ssh
+      cp /root/.ssh/authorized_keys ~{{ $username }}/.ssh/authorized_keys
+      chmod 0600 ~{{ $username }}/.ssh/authorized_keys
+      mkdir -p ~{{ $username }}/scripts
+      if [[ ! -d /home/{{ $username }}/{{ .Values.devConfig.repoPath }} ]]; then
+        mkdir -p ~{{ $username }}/{{ .Values.devConfig.repoPath }}
+        cp /configs/*-install.sh ~{{ $username }}/scripts
+        chmod +x ~{{ $username }}/scripts/*-install.sh
+        cp /configs/workspace.code-workspace ~{{ $username }}/workspace.code-workspace
+        cp /configs/id_ed25519 ~{{ $username }}/.ssh/id_ed25519
+        chmod 0600 ~{{ $username }}/.ssh/id_ed25519
+        sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/krew-install.sh
+        sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/omz-install.sh
+        sudo -u {{ $username }} -- bash ~{{ $username }}/scripts/powerline-install.sh
+      fi
+      chown -Rv {{ $username }}: ~{{ $username }}
+    fi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  name: {{ .Release.Name }}-vscode-workspace
+data:
+  workspace.code-workspace: |
+    {
+        "folders": [
+            {
+                "path": "git"
+            }
+        ],
+        "settings": {
+            "files.enableTrash": false,
+            "files.autoSave": "onWindowChange",
+            "terminal.integrated.fontFamily": "MesloLGS NF",
+            "window.title": "${dirty}${separator}${rootName}"
+        }
+    }
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "dev-pod.labels" . | nindent 4 }}
+  name: {{ .Release.Name }}-post-setup-script
+data:
+  omz-install.sh: |
+    #!/bin/bash
+    # Oh my ZSH
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  krew-install.sh: |
+    #!/bin/bash
+    # Krew
+    (
+      set -x; cd "$(mktemp -d)" &&
+      OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+      ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+      KREW="krew-${OS}_${ARCH}" &&
+      curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+      tar zxvf "${KREW}.tar.gz" &&
+      ./"${KREW}" install krew
+    )
+  powerline-install.sh: |
+    #!/bin/bash
+    # Powerline10k
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
