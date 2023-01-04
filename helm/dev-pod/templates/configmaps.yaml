@@ -46,16 +46,19 @@ metadata:
 data:
   workspace.code-workspace: |
     {
-      "folders": [
-        {
-          "path": "./{{ .Values.devConfig.repoPath }}"
+        "folders": [
+            {
+                "path": "git"
+            }
+        ],
+        "settings": {
+            "files.enableTrash": false,
+            "files.autoSave": "onWindowChange",
+            "terminal.integrated.fontFamily": "MesloLGS NF",
+            "window.title": "${dirty}${separator}${rootName}"
         }
-      ],
-      "settings": {
-        "files.enableTrash": false,
-        "terminal.integrated.fontFamily": "{{ .Values.devConfig.terminalFont }}"
-      }
     }
+
 ---
 apiVersion: v1
 kind: ConfigMap

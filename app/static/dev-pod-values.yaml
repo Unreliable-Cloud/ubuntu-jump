@@ -1,0 +1,40 @@
+# dev-pod values
+devConfig:
+  user: ubuntu
+  repoPath: git
+  shell: "/usr/bin/zsh"
+  terminalFont: "MesloLGS NF"
+
+kubeApiServer: "5.161.160.176"
+
+persistence:
+  size: 50Gi
+
+podAnnotations:
+  backup.velero.io/backup-volumes: "homedir"
+  kubectl.kubernetes.io/default-container: ubuntu
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 300Mi
+
+velero:
+  enabled: false
+  backupSchedule:
+    schedule: '@every 24h'
+    template:
+      includeClusterResources: true
+      includedNamespaces:
+      - test-dev-pod
+      includedResources:
+      - '*'
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: dev-pod
+          app.kubernetes.io/instance: ubuntu
+      snapshotVolumes: true
+      storageLocation: velero-hetzner-aws
+      ttl: 168h0m0s
+      volumeSnapshotLocations:
+      - velero-hetzner-aws
