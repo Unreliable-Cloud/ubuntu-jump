@@ -17,8 +17,8 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
-      - uses: docker/build-push-action@v3
-        if: github.event.pull_request.merged == true
+      - name: Build Container
+        uses: docker/build-push-action@v3
         with:
           push: false
           tags: ${{ env.REGISTRY_BASE }}/${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
