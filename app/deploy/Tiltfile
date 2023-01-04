@@ -13,6 +13,9 @@ docker_build(
   live_update = [
     sync('../docker/src/templates', '/usr/src/app/templates'),
     sync('../docker/src/static', '/usr/src/app/static'),
+    run (
+      'pip3 install -r /usr/src/app/requirements.txt'
+    )
   ]
 )
 
