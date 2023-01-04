@@ -33,4 +33,3 @@ jobs:
         uses: WyriHaximus/github-action-helm3@v2
         with:
           exec: helm dep up ${{ env.CHART_PATH }} && helm lint ./${{ env.CHART_PATH }}
-
