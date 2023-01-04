@@ -1,21 +1,30 @@
 # Allow deploying to k8s-us-east-1
 allow_k8s_contexts('k8s-us-east-1')
 
+# Always use docker hub
+default_registry('docker.io/youvegotmoxie')
+
 # Build container
 docker_build(
-  "docker.io/youvegotmoxie/devpod",
-  context='../docker',
-  dockerfile='../docker/Dockerfile',
-  live_update=[
+  "devpod",
+  context = '../docker',
+  dockerfile = '../docker/Dockerfile',
+  extra_tag='devpod:tilt-dev',
+  live_update = [
     sync('../docker/src/templates', '/usr/src/app/templates'),
     sync('../docker/src/static', '/usr/src/app/static'),
   ]
 )
 
+# Keep container images in check
+docker_prune_settings(keep_recent = 2, num_builds = 5)
+
 # Deploy to k8s
 k8s_yaml(['deployment.yaml', 'service.yaml'])
 k8s_resource(
-  workload='devpod',
-  #port_forwards='8000:8000',
-  labels=['devpod']
+  workload = 'devpod',
+  labels = ['devpod'],
+  pod_readiness = 'wait'
 )
+
+readyProbe = http_get_action(port=8000, host="devpod-dev.k8s.unreliable.cloud")

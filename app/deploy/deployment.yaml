@@ -13,14 +13,14 @@ spec:
     spec:
       containers:
       - name: devpod
-        image: docker.io/youvegotmoxie/devpod
-        env:
-        - name: PYTHONUNBUFFERED
-          value: "1"
+        image: devpod
         resources:
           limits:
-            cpu: 500m
-            memory: 128Mi
+            cpu: 200m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - containerPort: 8000
           name: http
