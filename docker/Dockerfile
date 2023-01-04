@@ -51,7 +51,7 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
 # Install Ansible
 RUN apt install software-properties-common && \
     add-apt-repository --yes --update ppa:ansible/ansible && \
-    apt install ansible && \
+    apt install -y ansible && \
     apt autoclean && apt autoremove
 
 # Install Kubecolor
