@@ -14,8 +14,11 @@ docker_build(
     sync('../docker/src/templates', '/usr/src/app/templates'),
     sync('../docker/src/static', '/usr/src/app/static'),
     sync('../docker/src/requirements.txt', '/home/devpod/requirements.txt'),
+    sync('../docker/src/app.py', '/usr/src/app/app.py'),
+    sync('../docker/src/dev_pod.py', '/usr/src/app/dev_pod.py'),
     run (
-      'pip3 install --no-cache-dir -r /home/devpod/requirements.txt'
+      'pip3 install --no-cache-dir -r /home/devpod/requirements.txt',
+      trigger = '../docker/src/requirements.txt'
     )
   ]
 )
@@ -31,3 +34,18 @@ k8s_resource(
   objects=['devpod:serviceaccount:default', 'devpod:clusterrolebinding'],
   pod_readiness = 'wait'
 )
+
+#docker_build('example-python-image', '.', build_args={'flask_env': 'development'},
+#    live_update=[
+#        sync('.', '/app'),
+#        run('cd /app && pip install -r requirements.txt',
+#            trigger='./requirements.txt'),
+#
+#        # if all that changed was start-time.txt, make sure the server
+#        # reloads so that it will reflect the new startup time
+#        run('touch /app/app.py', trigger='./start-time.txt'),
+#
+#        # add a congrats message!
+#        run('sed -i "s/Hello cats!/{}/g" /app/templates/index.html'.
+#            format(congrats)),
+#])

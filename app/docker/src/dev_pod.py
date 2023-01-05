@@ -1,14 +1,11 @@
 from avionix import ChartBuilder, ChartDependency, ChartInfo
 import yaml
 
-def deploy_dev_pod(namespace=str, deploymentName=str, backupState=str):
+def deploy_dev_pod(namespace=str, deploymentName=str, backupState=bool):
   valuesFile = "static/dev-pod-values.yaml"
   namespace = namespace
   deploymentName = deploymentName
-  if str(backupState) != "on":
-    backupState = "false"
-  else:
-    backupState = "true"
+  backupState = backupState
 
   with open(valuesFile) as f:
       values = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -23,7 +20,7 @@ def deploy_dev_pod(namespace=str, deploymentName=str, backupState=str):
               ChartDependency(
                   name="dev-pod",
                   version="0.0.3",
-                  repository="file://helm",
+                  repository="file:///home/devpod/helm",
                   local_repo_name="dev-pod",
                   is_local=True,
                   values=values,

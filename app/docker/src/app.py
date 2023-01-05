@@ -9,24 +9,30 @@ backupState = ""
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/", methods = ["GET"])
 def root():
     return render_template('parent-index.html',
                             namespace=namespace,
                             deploymentName=deploymentName)
 
-@app.route("/deploy", methods =["GET", "POST"])
+@app.route("/deploy", methods = ["GET", "POST"])
 def deploy():
     if request.method == "POST":
-        namespace = request.form.get("namespace")
-        deploymentName = request.form.get("deploymentName")
-        backupState = request.form.get("backupState")
-        dev_pod.deploy_dev_pod(namespace, deploymentName, backupState)
+        deployPost = {
+            "namespace": request.form.get("namespace"),
+            "deploymentName": request.form.get("deploymentName"),
+            "backupState": request.form.get("backupState"),
+        }
+        if deployPost['backupState'] is None:
+            deployPost['backupState'] = "false"
+        else:
+            deployPost['backupState'] = "true"
+        dev_pod.deploy_dev_pod(deployPost['namespace'], deployPost['deploymentName'], deployPost['backupState'])
 
         return render_template('parent-deploy.html',
-                                namespace=namespace,
-                                deploymentName=deploymentName,
-                                backupState=backupState)
+                                namespace=deployPost['namespace'],
+                                deploymentName=deployPost['deploymentName'],
+                                backupState=deployPost['backupState'])
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port='8000', debug=True)

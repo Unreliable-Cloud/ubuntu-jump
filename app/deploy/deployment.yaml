@@ -30,3 +30,4 @@ spec:
         readinessProbe:
           httpGet:
             port: http
+      serviceAccountName: devpod
