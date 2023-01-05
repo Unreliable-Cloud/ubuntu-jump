@@ -16,9 +16,14 @@ docker_build(
     sync('../docker/src/requirements.txt', '/home/devpod/requirements.txt'),
     sync('../docker/src/app.py', '/usr/src/app/app.py'),
     sync('../docker/src/dev_pod.py', '/usr/src/app/dev_pod.py'),
+    sync('../docker/src/helm', '/home/devpod/helm'),
     run (
       'pip3 install --no-cache-dir -r /home/devpod/requirements.txt',
       trigger = '../docker/src/requirements.txt'
+    ),
+    run(
+      'chown -Rv devpod: /home/devpod/helm',
+      trigger = '../docker/src/helm'
     )
   ]
 )
