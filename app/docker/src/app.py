@@ -1,9 +1,17 @@
 import dev_pod
 from flask import Flask, request, redirect, url_for, render_template
+from flask_login import LoginManager
+import os
 
-namespace = "devpod-deploy"
+login_manager = LoginManager()
+namespace = os.environ.get('DEPLOY_NS', 'devpod-deploy')
 
 app = Flask(__name__)
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 @app.route("/", methods = ["GET"])
 def root():
@@ -19,7 +27,17 @@ def logout():
 
 @app.route("/authenticate", methods = ["GET", "POST"])
 def authenticate():
-    pass
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == "mike":
+            if password == "password":
+                return redirect(url_for('create'))
+            else:
+                return redirect(url_for('login'))
+        else:
+            return redirect(url_for('login'))
 
 @app.route("/create", methods = ["GET", "POST"])
 def create():

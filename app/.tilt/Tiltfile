@@ -38,8 +38,7 @@ k8s_yaml(['resources/deployment.yaml',
   'resources/service.yaml',
   'resources/clusterrolebinding.yaml',
   'resources/namespace.yaml',
-  'resources/resourcequota.yaml',
-  'resources/limitrange.yaml'])
+  'resources/resourcequota.yaml'])
 
 k8s_resource(
   workload = 'devpod',
@@ -47,7 +46,6 @@ k8s_resource(
   objects=['devpod:serviceaccount:default',
     'devpod:clusterrolebinding',
     'devpod-deploy:namespace',
-    'mem-cpu-limits:resourcequota',
-    'mem-cpu-limits-pod:limitrange'],
+    'mem-cpu-limits:resourcequota'],
   pod_readiness = 'wait'
 )
