@@ -13,29 +13,21 @@ spec:
     spec:
       containers:
       - name: devpod
-        image: docker.io/youvegotmoxie/devpod
+        image: devpod
         env:
         - name: PYTHONUNBUFFERED
           value: "1"
         resources:
           limits:
-            cpu: 500m
-            memory: 128Mi
+            cpu: 200m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - containerPort: 8000
           name: http
         readinessProbe:
           httpGet:
             port: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: devpod
-spec:
-  selector:
-    app: devpod
-  ports:
-  - port: 8000
-    targetPort: 8000
-
+      serviceAccountName: devpod

@@ -14,7 +14,11 @@
   <nav class="light-blue blue" role="navigation">
     <ul class="right hide-on-med-and-down">
       {% for item in menu_items %}
-      <li><a href="/{{ item | lower }}">{{ item }}</a></li>
+      {% if item == "Home" %}
+      <li><a href="/create">{{ item }}</a></li>
+      {% else %}
+      <li><a href="{{ item|lower }}">{{ item }}</a></li>
+      {% endif %}
       {% endfor %}
     </ul>
   </nav>
@@ -39,17 +43,26 @@
                 </div>
               </div>
               <div class="row center">
-                <h5 class="header col s12 light">Enable Backups</h5>
+                <h5 class="header col s6 light">Backups</h5>
+                <h5 class="header col s6 light">Shell</h5>
               </div>
-              <div class="switch">
+              <div class="switch col s6">
                 <label for="backupState">
-                  Disable
+                  Disabled
                   <input id="backupState" name="backupState" type="checkbox">
                   <span class="lever"></span>
-                  Enable
+                  Enabled
                 </label>
               </div>
-              <div class="row centered"><br><br>
+              <div class="switch col s6">
+                <label for="shell">
+                  Bash
+                  <input id="shell" name="shell" type="checkbox" checked="checked">
+                  <span class="lever"></span>
+                  Zsh
+                </label>
+              </div>
+              <div class="row centered"><br><br><br>
                 <button class="btn-large waves-effect waves-light blue" type="submit"><i class="material-icons right">cloud</i>Create</button>
               </div>
           </form>
