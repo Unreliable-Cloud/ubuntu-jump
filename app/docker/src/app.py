@@ -3,10 +3,29 @@ from flask import Flask, request, redirect, url_for, render_template
 
 app = Flask(__name__)
 
-
 @app.route("/", methods = ["GET"])
 def root():
-    return render_template('parent-index.html')
+    return redirect(url_for('login'))
+
+@app.route("/login", methods = ["GET"])
+def login():
+    return render_template('parent-login.html')
+
+@app.route("/logout", methods = ["GET", "POST"])
+def logout():
+    return redirect(url_for('login'))
+
+@app.route("/authenticate", methods = ["GET", "POST"])
+def authenticate():
+    pass
+
+@app.route("/create", methods = ["GET", "POST"])
+def create():
+    return render_template('parent-create.html')
+
+@app.route("/docs", methods = ["GET"])
+def docs():
+    return redirect("https://github.com/Unreliable-Cloud/ubuntu-jump")
 
 @app.route("/deploy", methods = ["GET", "POST"])
 def deploy():
@@ -30,7 +49,7 @@ def deploy():
 
         dev_pod.deploy_dev_pod(deployPost['namespace'], deployPost['deploymentName'], deployPost['backupState'], deployPost['shell'])
 
-        return render_template('parent-deploy.html',
+        return render_template('parent-deployed.html',
                                 namespace=deployPost['namespace'],
                                 deploymentName=deployPost['deploymentName'],
                                 backupState=deployPost['backupState'],

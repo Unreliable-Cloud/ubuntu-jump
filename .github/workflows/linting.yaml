@@ -17,10 +17,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Lint Dockerfile
+      - name: Lint Dockerfile (Ubuntu)
         uses: hadolint/hadolint-action@v2.1.0
         with:
           dockerfile: ${{ env.CONTEXT }}/Dockerfile
+          no-fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Lint Dockerfile (DevPod)
+        uses: hadolint/hadolint-action@v2.1.0
+        with:
+          dockerfile: app/docker/Dockerfile
           no-fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

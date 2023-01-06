@@ -28,6 +28,6 @@ def deploy_dev_pod(namespace=str, deploymentName=str, backupState=bool, shell=st
         [],
     )
 
-    builder.install_chart(options={"namespace": namespace, "create-namespace": None, "dependency-update": None, "debug": None})
+    #builder.install_chart(options={"namespace": namespace, "create-namespace": None, "dependency-update": None, "debug": None})
     return print(f"Helm values: {values}")
     f.close()

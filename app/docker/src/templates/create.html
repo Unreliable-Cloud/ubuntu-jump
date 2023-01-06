@@ -14,7 +14,11 @@
   <nav class="light-blue blue" role="navigation">
     <ul class="right hide-on-med-and-down">
       {% for item in menu_items %}
-      <li><a href="/{{ item | lower }}">{{ item }}</a></li>
+      {% if item == "Home" %}
+      <li><a href="/create">{{ item }}</a></li>
+      {% else %}
+      <li><a href="{{ item|lower }}">{{ item }}</a></li>
+      {% endif %}
       {% endfor %}
     </ul>
   </nav>
