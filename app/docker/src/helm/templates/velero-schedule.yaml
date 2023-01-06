@@ -5,7 +5,7 @@ kind: Schedule
 metadata:
   labels:
     {{- include "dev-pod.labels" . | nindent 4 }}
-  name: {{ include "dev-pod.fullname" . }}-backup
+  name: {{ .Release.Name }}-backup
   namespace: velero
 spec:
 {{- with .Values.velero.backupSchedule }}
