@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ template "dev-pod.fullname" . }}-label-ns-job
+  name: {{ .Release.Name }}-label-ns-job
   labels:
     {{- include "dev-pod.labels" . | nindent 4 }}
   annotations:
@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "dev-pod.fullname" . }}-job
+        app: {{ .Release.Name }}-job
         release: {{ .Release.Name }}
     spec:
       containers:
@@ -23,5 +23,5 @@ spec:
         image: {{ .Values.job.image.repository }}:{{ .Values.job.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["bash", "-c", "kubectl label namespace {{ .Release.Namespace }} --overwrite app.kubernetes.io/part-of=dev-pod"]
-      serviceAccountName: {{ template "dev-pod.fullname" . }}-label-ns-job
+      serviceAccountName: {{ .Release.Name }}-label-ns-job
       restartPolicy: Never
