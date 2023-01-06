@@ -1,6 +1,8 @@
 import dev_pod
 from flask import Flask, request, redirect, url_for, render_template
 
+namespace = "devpod-deploy"
+
 app = Flask(__name__)
 
 @app.route("/", methods = ["GET"])
@@ -31,7 +33,6 @@ def docs():
 def deploy():
     if request.method == "POST":
         deployPost = {
-            "namespace": request.form.get("namespace"),
             "deploymentName": request.form.get("deploymentName"),
             "backupState": request.form.get("backupState"),
             "shell": request.form.get("shell"),
@@ -47,10 +48,10 @@ def deploy():
         else:
             deployPost['backupState'] = True
 
-        dev_pod.deploy_dev_pod(deployPost['namespace'], deployPost['deploymentName'], deployPost['backupState'], deployPost['shell'])
+        dev_pod.deploy_dev_pod(namespace, deployPost['deploymentName'], deployPost['backupState'], deployPost['shell'])
 
         return render_template('parent-deployed.html',
-                                namespace=deployPost['namespace'],
+                                namespace=namespace,
                                 deploymentName=deployPost['deploymentName'],
                                 backupState=deployPost['backupState'],
                                 shell=deployPost['shell'])

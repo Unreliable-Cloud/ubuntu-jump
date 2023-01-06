@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/part-of: dev-pod
+    kubernetes.io/metadata.name: devpod-deploy
+  name: devpod-deploy

@@ -30,14 +30,8 @@
         <div class="row centered">
           <form class="col s12" action="{{ url_for('deploy') }}" method="post">
             <div class="row">
-              <div class="input-field col s6">
-                <div class="center-align s6">
-                  <label for="namespace">Namespace</label><br>
-                  <input class="center-align" for="namespace" id="namespace" name="namespace" type="text" placeholder="my-dev-namespace">
-               </div>
-              </div>
-              <div class="input-field col s6">
-                <div class="center-align s6">
+              <div class="input-field col s12">
+                <div class="center-align s12">
                   <label for="deploymentName">Deployment Name</label><br>
                   <input class="center-align" for="deploymentName" id="deploymentName" name="deploymentName" type="text" placeholder="ubuntu-2204-testing">
                 </div>
