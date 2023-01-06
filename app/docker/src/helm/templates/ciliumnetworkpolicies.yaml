@@ -34,8 +34,8 @@ spec:
         - ports:
             - port: "443"
               protocol: TCP
-    - toFQDNs:
-        - matchPattern: "*"
+    - toCIDRSet:
+        - cidr: "0.0.0.0/0"
       toPorts:
         - ports:
             - port: "443"

@@ -64,14 +64,14 @@ spec:
         - name: GH_TOKEN
           valueFrom:
             secretKeyRef:
-              name: github-token
+              name: {{ .Release.Name }}-github-token
               key: GH_TOKEN
         ports:
         - containerPort: {{ .Values.service.port }}
           name: ssh
           protocol: TCP
         volumeMounts:
-        - name: homedir
+        - name: {{ .Release.Name }}-homedir
           mountPath: /home
         - name: {{ .Release.Name }}-poststart
           mountPath: /usr/local/share/startup_scripts
@@ -139,12 +139,12 @@ spec:
           emptyDir: {}
         - name: ssh-key
           secret:
-            secretName: ssh-key
+            secretName: {{ .Release.Name }}-ssh-key
 
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
-      name: homedir
+      name: {{ .Release.Name }}-homedir
       labels:
         {{- include "dev-pod.labels" . | nindent 8 }}
     spec:

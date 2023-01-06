@@ -4,7 +4,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "dev-pod.labels" . | nindent 4 }}
-  name: {{ template "dev-pod.fullname" . }}-label-ns-job
+  name: {{ .Release.Name }}-label-ns-job
 rules:
 - apiGroups:
   - ""
