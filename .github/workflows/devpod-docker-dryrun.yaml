@@ -1,5 +1,5 @@
 ---
-name: Build Container (Test)
+name: Build DevPod Container (Test)
 on:
   pull_request:
     branches: [master, main]

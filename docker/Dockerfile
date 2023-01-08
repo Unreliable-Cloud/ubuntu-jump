@@ -21,6 +21,7 @@ ENV NERDCTL_VER=1.1.0
 ENV SSHD_CONFIG=/etc/ssh/sshd_config
 ENV KUBECOLOR_VER=0.0.25
 ENV HELM_VER=3.10.3
+ENV KUSTOMIZE_VER=4.5.6
 
 WORKDIR /root
 
@@ -61,6 +62,11 @@ RUN wget https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz && \
     tar xzvf helm-v${HELM_VER}-linux-amd64.tar.gz && \
     chmod +x linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/helm && \
     rm -rf linux-amd64 && rm helm-v${HELM_VER}-linux-amd64.tar.gz
+
+# Install Kustomize
+RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${KUSTOMIZE_VER}/kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz && \
+    tar xzvf kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz && chmod +x kustomize && mv kustomize /usr/local/bin/kustomize && \
+    rm kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz
 
 # Install Docker
 RUN mkdir -p /etc/apt/keyrings && \

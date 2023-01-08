@@ -1,5 +1,5 @@
 ---
-name: Build Container
+name: Build Container (Ubuntu)
 on:
   pull_request:
     types: [ closed ]

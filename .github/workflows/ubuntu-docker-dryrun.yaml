@@ -1,5 +1,5 @@
 ---
-name: Build Container (Test)
+name: Build Ubuntu Container (Test)
 on:
   pull_request:
     branches: [master, main]
