@@ -5,7 +5,7 @@ metadata:
   name: mem-cpu-limits
 spec:
   hard:
-    requests.cpu: "2"
+    requests.cpu: "4"
     requests.memory: 4Gi
-    limits.cpu: "4"
+    limits.cpu: "8"
     limits.memory: 8Gi

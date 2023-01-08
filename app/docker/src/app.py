@@ -1,43 +1,13 @@
 import dev_pod
 from flask import Flask, request, redirect, url_for, render_template
-from flask_login import LoginManager
-import os
 
-login_manager = LoginManager()
-namespace = os.environ.get('DEPLOY_NS', 'devpod-deploy')
+namespace = "devpod-deploy"
 
 app = Flask(__name__)
-login_manager.init_app(app)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
 
 @app.route("/", methods = ["GET"])
 def root():
-    return redirect(url_for('login'))
-
-@app.route("/login", methods = ["GET"])
-def login():
-    return render_template('parent-login.html')
-
-@app.route("/logout", methods = ["GET", "POST"])
-def logout():
-    return redirect(url_for('login'))
-
-@app.route("/authenticate", methods = ["GET", "POST"])
-def authenticate():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if username == "mike":
-            if password == "password":
-                return redirect(url_for('create'))
-            else:
-                return redirect(url_for('login'))
-        else:
-            return redirect(url_for('login'))
+    return redirect(url_for('create'))
 
 @app.route("/create", methods = ["GET", "POST"])
 def create():
