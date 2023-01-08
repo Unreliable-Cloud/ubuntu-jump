@@ -64,7 +64,7 @@ RUN wget https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz && \
     rm -rf linux-amd64 && rm helm-v${HELM_VER}-linux-amd64.tar.gz
 
 # Install Kustomize
-RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VER}/kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz && \
+RUN wget "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VER}/kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz" && \
     tar xzvf kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz && chmod +x kustomize && mv kustomize /usr/local/bin/kustomize && \
     rm kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz
 
