@@ -5,6 +5,7 @@ ARG TF_VER=1.3.6
 ARG PKR_VER=1.8.5
 ARG HELM_DOCS_VER=1.11.0
 ARG TILT_VER=0.30.13
+ARG KUSTOMIZE_VER=4.5.6
 
 FROM docker.io/bitnami/kubectl:$KUBE_VER as kube
 FROM docker.io/hashicorp/vault:$VAULT_VER as vault
@@ -61,6 +62,11 @@ RUN wget https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz && \
     tar xzvf helm-v${HELM_VER}-linux-amd64.tar.gz && \
     chmod +x linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/helm && \
     rm -rf linux-amd64 && rm helm-v${HELM_VER}-linux-amd64.tar.gz
+
+# Install Kustomize
+RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VER}/kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz && \
+    tar xzvf kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz && chmod +x kustomize && mv kustomize /usr/local/bin/kustomize && \
+    rm kustomize_v${KUSTOMIZE_VER}_darwin_amd64.tar.gz
 
 # Install Docker
 RUN mkdir -p /etc/apt/keyrings && \
