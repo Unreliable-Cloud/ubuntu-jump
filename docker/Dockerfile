@@ -5,7 +5,6 @@ ARG TF_VER=1.3.6
 ARG PKR_VER=1.8.5
 ARG HELM_DOCS_VER=1.11.0
 ARG TILT_VER=0.30.13
-ARG KUSTOMIZE_VER=4.5.6
 
 FROM docker.io/bitnami/kubectl:$KUBE_VER as kube
 FROM docker.io/hashicorp/vault:$VAULT_VER as vault
@@ -22,6 +21,7 @@ ENV NERDCTL_VER=1.1.0
 ENV SSHD_CONFIG=/etc/ssh/sshd_config
 ENV KUBECOLOR_VER=0.0.25
 ENV HELM_VER=3.10.3
+ENV KUSTOMIZE_VER=4.5.6
 
 WORKDIR /root
 
