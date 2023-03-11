@@ -6,7 +6,7 @@ devConfig:
   shell: "/usr/bin/zsh"
   terminalFont: "MesloLGS NF"
 
-kubeApiServer: "5.161.160.176"
+kubeApiServer: "5.161.161.78"
 
 persistence:
   size: 50Gi
