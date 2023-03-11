@@ -29,7 +29,7 @@ WORKDIR /root
 RUN apt update && \
     apt upgrade -y && \
     apt install -y openssh-server curl sudo vim git rsync zsh wget bash apt-transport-https \
-        python3 python3-pip python3-venv ca-certificates lsb-release gnupg
+        python3 python3-pip python3-venv ca-certificates lsb-release gnupg git-extras
 
 # Configure SSH
 RUN sed -i 's/^#PermitRootLogin/PermitRootLogin/' "${SSHD_CONFIG}" && \
