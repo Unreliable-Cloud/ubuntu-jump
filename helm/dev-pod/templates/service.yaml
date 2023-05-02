@@ -8,6 +8,8 @@ metadata:
     load-balancer.hetzner.cloud/ipv6-disabled: "true"
     load-balancer.hetzner.cloud/location: ash
     load-balancer.hetzner.cloud/protocol: tcp
+    load-balancer.hetzner.cloud/disable-private-ingress: "true"
+    load-balancer.hetzner.cloud/use-private-ip: "false"
     external-dns.alpha.kubernetes.io/hostname: {{ .Release.Name }}-{{ .Release.Namespace }}.k8s.unreliable.cloud
   name: {{ .Release.Name }}-ssh
 spec:
