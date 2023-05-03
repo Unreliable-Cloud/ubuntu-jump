@@ -22,6 +22,7 @@ ENV SSHD_CONFIG=/etc/ssh/sshd_config
 ENV KUBECOLOR_VER=0.0.25
 ENV HELM_VER=3.10.3
 ENV KUSTOMIZE_VER=4.5.6
+ENV KOPS_VER=v1.26.2
 
 WORKDIR /root
 
@@ -29,7 +30,8 @@ WORKDIR /root
 RUN apt update && \
     apt upgrade -y && \
     apt install -y openssh-server curl sudo vim git rsync zsh wget bash apt-transport-https \
-        python3 python3-pip python3-venv ca-certificates lsb-release gnupg git-extras
+        python3 python3-pip python3-venv ca-certificates lsb-release gnupg git-extras && \
+        python3 -m pip install pre-commit
 
 # Configure SSH
 RUN sed -i 's/^#PermitRootLogin/PermitRootLogin/' "${SSHD_CONFIG}" && \
@@ -51,6 +53,10 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
     apt update && \
     apt install -y gh
+
+# Install kops
+RUN wget https://github.com/kubernetes/kops/releases/download/${KOPS_VER}/kops-linux-amd64 && \
+    chmod +x kops-linux-amd64 && mv kops-linux-amd64 /usr/local/bin/kops
 
 # Install Kubecolor
 RUN wget https://github.com/hidetatz/kubecolor/releases/download/v${KUBECOLOR_VER}/kubecolor_${KUBECOLOR_VER}_Linux_x86_64.tar.gz && \
