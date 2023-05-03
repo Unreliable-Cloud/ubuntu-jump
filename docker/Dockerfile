@@ -5,6 +5,7 @@ ARG TF_VER=1.3.6
 ARG PKR_VER=1.8.5
 ARG HELM_DOCS_VER=1.11.0
 ARG TILT_VER=0.30.13
+ARG KOPS_VER=v1.26.2
 
 FROM docker.io/bitnami/kubectl:$KUBE_VER as kube
 FROM docker.io/hashicorp/vault:$VAULT_VER as vault
@@ -51,6 +52,10 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
     apt update && \
     apt install -y gh
+
+# Install kops
+RUN wget https://github.com/kubernetes/kops/releases/download/${KOPS_VER}/kops-linux-amd64 && \
+    chmod +x kops-linux-amd64 && mv kops-linux-amd64 /usr/local/bin/kops
 
 # Install Kubecolor
 RUN wget https://github.com/hidetatz/kubecolor/releases/download/v${KUBECOLOR_VER}/kubecolor_${KUBECOLOR_VER}_Linux_x86_64.tar.gz && \
