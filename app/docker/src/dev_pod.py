@@ -2,7 +2,7 @@ from avionix import ChartBuilder, ChartDependency, ChartInfo
 import yaml
 
 
-def deploy_dev_pod(namespace=str, deploymentName=str, backupState=bool, shell=str):
+def deploy_pod(namespace=str, deploymentName=str, backupState=bool, shell=str):
     valuesFile = "static/dev-pod-values.yaml"
 
     with open(valuesFile) as f:

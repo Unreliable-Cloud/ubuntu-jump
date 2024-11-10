@@ -30,17 +30,17 @@ def deploy():
             "shell": request.form.get("shell"),
         }
 
-        if deployPost['shell'] == None:
+        if deployPost['shell'] is None:
             deployPost['shell'] = "/bin/bash"
         else:
             deployPost['shell'] = "/usr/bin/zsh"
 
-        if deployPost['backupState'] == None:
+        if deployPost['backupState'] is None:
             deployPost['backupState'] = False
         else:
             deployPost['backupState'] = True
 
-        dev_pod.deploy_dev_pod(
+        dev_pod.deploy_pod(
             namespace, deployPost['deploymentName'], deployPost['backupState'], deployPost['shell'])
 
         return render_template('parent-deployed.html',
